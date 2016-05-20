@@ -1,0 +1,28 @@
+<html>
+    <head>
+        <title>Testing the JS section</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src = "https://code.jquery.com/jquery-2.2.1.min.js"></script>
+        <script src = "/JS/BlueAjax.js"></script>
+        <script>
+            var req = new GetAjaxRequest ("/src/tests/test.php", {"q": 1, "text":"Request 1"})
+                    .onError(function (f) {console.log(f)})
+                    .onSuccess(function (s) {console.log(s)})
+                    .execute()
+            
+            var AjaxRequest = AjaxRequestFactoryFactory("/src/tests/",
+                {"text":"Base text"},
+                //OnError
+                function (f) {console.log(f)},
+                //OnSuccess
+                function (s) {console.log(s)}
+            );
+            var req = AjaxRequest("test.php", {"q": 1, "text":"Request 2"}).execute()
+            req = AjaxRequest("test.php", {"q": 1, "text":"Request 3"}).execute()
+            req = AjaxRequest("test.php", {"q": 1}).execute()
+        </script>
+    </head>
+    <body>
+    </body>
+</html>

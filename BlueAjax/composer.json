@@ -1,0 +1,28 @@
+{
+    "name": "bluepost/blueajax",
+    "type": "library",
+    "description": "Super-Simple framework for making AJAX easier to deal with on the PHP side",
+    "keywords": ["ajax","bluepost"],
+    "homepage": "https://github.com/BluePost/BlueAjax",
+    "authors": [
+        {
+            "name": "Freddie Poser",
+            "homepage": "http://vogonjeltz.com",
+            "role": "Developer",
+            "email": "freddie.poser@gmail.com",
+            "6*9": "42"
+        },
+        {
+            "name": "James Bithell",
+            "email": "hi@jbithell.com",
+            "homepage": "http://www.jbithell.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0"
+    },
+    "autoload": {
+	"files": ["src/BlueAjax.php"]
+    }
+}

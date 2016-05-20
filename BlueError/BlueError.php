@@ -1,5 +1,4 @@
 <?php
-
 namespace BluePost;
 
 function customError($type = "SE", $subType = "GE", $section = null, $message = "An error occurred") {
