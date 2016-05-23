@@ -42,18 +42,16 @@ booleans being passed back and forth.
     <script src = "https://code.jquery.com/jquery-2.2.1.min.js"></script>
     <script src = "/JS/BlueAjax.js"></script>
     <script>
-        var req = new GetAjaxRequest ("/src/tests/test.php", {"q": 1, "text":"Text here"})
-                .onError(function (f) {console.log(f)})
-                .onSuccess(function (s) {console.log(s)})
-                .execute()
-        
-        var AjaxRequest = AjaxRequestFactoryFactory("/src/tests/", 
-                //OnError
-                function (f) {console.log(f)},
-                //OnSuccess
-                function (s) {console.log(s)}
-            );
-        var req = AjaxRequest("test.php", {"q": 1, "text":"Text here"}).execute()
+        console.log("Expect SUCCESS, ERROR, SUCCESS, ERROR")
+        new AjaxRequest("GET", "http://uptask.vogonjeltz.com/api/TestApi/success.php").execute();
+    
+        new AjaxRequest("GET", "http://uptask.vogonjeltz.com/api/TestApi/fail.php").execute();
+    
+        var AjaxRequestFactory = AjaxRequestFactoryFactory("http://uptask.vogonjeltz.com/api/TestApi/", {}, "GET");
+    
+        AjaxRequestFactory("success.php", {}).execute()
+    
+        AjaxRequestFactory("fail.php", {}).execute()
     </script>
 ```
 ## API Details
