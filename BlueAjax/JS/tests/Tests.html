@@ -1,0 +1,27 @@
+<html>
+<head>
+    <title>Testing the JS section</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src = "https://code.jquery.com/jquery-2.2.1.min.js"></script>
+    <script src = "/BlueUtils/BlueAjax/JS/BlueAjax.js"></script>
+    <script>
+
+        console.log("Expect SUCCESS, ERROR, SUCCESS, ERROR")
+        new AjaxRequest("GET", "http://uptask.vogonjeltz.com/api/TestApi/success.php").execute();
+
+        new AjaxRequest("GET", "http://uptask.vogonjeltz.com/api/TestApi/fail.php").execute();
+
+        var AjaxRequestFactory = AjaxRequestFactoryFactory("http://uptask.vogonjeltz.com/api/TestApi/", {}, "GET");
+
+        AjaxRequestFactory("success.php", {}).execute()
+
+        AjaxRequestFactory("fail.php", {}).execute()
+
+        //TODO: Add tests for the data
+
+    </script>
+</head>
+<body>
+</body>
+</html>
