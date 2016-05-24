@@ -15,6 +15,7 @@ function AjaxRequest(method, resource, data, successKey, errorKey) {
     this.successKey = typeof successKey !== 'undefined' ?  successKey : "success";
     this.errorKey = typeof errorKey !== 'undefined' ?  errorKey : "error";
     this.resource = resource;
+    this.method = method
 
     this.onErrorFunction = function (data) {console.log("ERROR");};
 
@@ -82,12 +83,11 @@ function AjaxRequest(method, resource, data, successKey, errorKey) {
      */
     this.execute = function () {
         var me = this;
-
         $.ajax({
             url: this.resource,
             data: this.data,
-            type: this.type,
-            dataType: "text"
+            type: this.method,
+            contentType: "application/x-www-form-urlencoded"
         })
         .done (function (data) {
             try{
@@ -137,15 +137,16 @@ function AjaxRequestFactoryFactory (base, defaultData, type, onError, onSuccess,
     if (log) {
         console.log("Creating AjaxRequestFactoryMethod with the following settings:");
         console.log("Type: " + me.type);
-        console.log("Default Data: " + me.defaultData.toString());
+        console.log("Default Data: ");
+        console.dir(me.defaultData)
         console.log("Success Key: " + me.successKey);
         console.log("Error Key: " + me.errorKey);
         console.log("Base: " + me.base);
     }
 
     return function (path, data, type) {
-        type = typeof type !== 'undefined' ? type : me.type
-        return new AjaxRequest(type, me.base + path, jQuery.extend(true, {}, defaultData),  me.successKey, me.errorKey).onError(me.onError).onSuccess(me.onSuccess).addData(data);
+        type = typeof type !== 'undefined' ? type : me.type;
+        return new AjaxRequest(type, me.base + path, $.extend({}, me.defaultData, data),  me.successKey, me.errorKey).onError(me.onError).onSuccess(me.onSuccess).addData(data);
     }
 
 }
