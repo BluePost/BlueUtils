@@ -42,16 +42,27 @@ booleans being passed back and forth.
     <script src = "https://code.jquery.com/jquery-2.2.1.min.js"></script>
     <script src = "/JS/BlueAjax.js"></script>
     <script>
-        console.log("Expect SUCCESS, ERROR, SUCCESS, ERROR")
-        new AjaxRequest("GET", "http://uptask.vogonjeltz.com/api/TestApi/success.php").execute();
-    
-        new AjaxRequest("GET", "http://uptask.vogonjeltz.com/api/TestApi/fail.php").execute();
-    
+        //success.php returns a success message
+        //fail.php returns a failure message
+        //postDataTest.php returns success if "data" is set to 42
+
+        new AjaxRequest("GET", "http://uptask.vogonjeltz.com/api/TestApi/success.php").onSuccess(function(){console.log("NS - WORKED")}).onError(function(){console.log("NS - FAILED")}).execute();
+
+        new AjaxRequest("GET", "http://uptask.vogonjeltz.com/api/TestApi/fail.php").onSuccess(function(){console.log("NF - FAILED")}).onError(function(){console.log("NF - WORKED")}).execute();
+
+        new AjaxRequest("POST", "http://uptask.vogonjeltz.com/api/TestApi/postDataTest.php", {"data" : 42}).onSuccess(function(){console.log("NP - WORKED")}).onError(function(){console.log("NP - FAILED")}).execute();
+
         var AjaxRequestFactory = AjaxRequestFactoryFactory("http://uptask.vogonjeltz.com/api/TestApi/", {}, "GET");
-    
-        AjaxRequestFactory("success.php", {}).execute()
-    
-        AjaxRequestFactory("fail.php", {}).execute()
+
+        AjaxRequestFactory("success.php", {}).onSuccess(function(){console.log("FS - WORKED")}).onError(function(){console.log("FS - FAILED")}).execute();
+
+        AjaxRequestFactory("fail.php", {}).onSuccess(function(){console.log("FF - FAILED")}).onError(function(){console.log("FF - WORKED")}).execute();
+
+        AjaxRequestFactory = AjaxRequestFactoryFactory("http://uptask.vogonjeltz.com/api/TestApi/", {"data":"20"}, "POST", function(){}, function (){}, "success", "error", false);
+
+        AjaxRequestFactory("postDataTest.php", {}).onSuccess(function(){console.log("DD - FAILED")}).onError(function(data){console.log("DD - WORKED")}).execute();
+
+        AjaxRequestFactory("postDataTest.php", {"data":"42"}).onSuccess(function(){console.log("DO - WORKED")}).onError(function(data){console.log("DO - FAILED")}).execute();
     </script>
 ```
 ## API Details
