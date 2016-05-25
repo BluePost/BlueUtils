@@ -1,4 +1,11 @@
-//TODO: Generalise GET and POST
+/**
+ * @deprecated
+ * @param resource
+ * @param data
+ * @param successKey
+ * @param errorKey
+ * @constructor
+ */
 function GetAjaxRequest(resource, data, successKey, errorKey) {
 
     if (typeof resource === 'undefined') throw Error("Resource Undefined");
@@ -62,8 +69,16 @@ function GetAjaxRequest(resource, data, successKey, errorKey) {
         .fail(me.onFailFunction);
     }
     
-}   
+}
 
+/**
+ * @deprecated
+ * @param resource
+ * @param data
+ * @param successKey
+ * @param errorKey
+ * @constructor
+ */
 function PostAjaxRequest(resource, data, successKey, errorKey) {
 
     if (typeof resource === 'undefined') throw Error("Resource Undefined");
