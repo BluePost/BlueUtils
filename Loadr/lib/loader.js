@@ -14,8 +14,9 @@ Loadr.load = function (onComplete, force, clearCache) {
     }
     if (clearCache === "undefined") clearCache = true;
 
-    //Select all of the includes
-    var includes = $("include");
+    //Select all of the includes with a source attribute
+    var includes = $("include[source]");
+    console.log(includes)
 
     //Array of booleans that are true if the template is downloaded
     var includesProcessed = [];
@@ -32,7 +33,6 @@ Loadr.load = function (onComplete, force, clearCache) {
     includes.each(function (index) {
         //Don't load downloded unless force = true and it has a source attribute
         if($(this).html() != "" && !force) return;
-        if(!$(this).hasAttribute("source")) return;
 
         var elem = this;
         //Now ajax load the source
