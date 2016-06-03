@@ -1,18 +1,6 @@
 # BlueAjax
 Super-Simple framework for making AJAX easier to deal with on the PHP side. It also includes some JS objects for communicating with an AJAX php script built using this lib.
 
-##Getting Started
-### Installation with <a href="https://getcomposer.org/">Composer</a> (<b>Recommended</b>)
-We recommend you install the package with Composer:
-```
-composer require bluepost/blueajax
-```
-### Installation
-Alternatively you can download the <a href="https://github.com/BluePost/BlueAjax/releases/latest">Latest Release</a>, unzip it, and upload the src folder to your environment. Then require it for every file for which you need it. 
-```php
-require_once ('BlueAjax.php');
-```
-
 ### JavaScript
 The javascript components are all in JS/BlueAjax.js file.
 
@@ -95,3 +83,6 @@ These examples use the method `customError` which generates an array for json en
     * An isset that has a number of extra tests, controlled by the boolean variables
 * `laxIsset ($test, $NES = FALSE)`
   * This uses `strictIsset` with all optional params set to FALSE, except `$notEmptyString`, which is set to `$NES`
+  
+### JS
+Under Construction

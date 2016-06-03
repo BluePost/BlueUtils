@@ -1,11 +1,13 @@
 <?php
 
+//This file defines a set of errors that could be returned by an authentication API
+//All error messages are defined as top level fields for ease of use
+//A better one would be to have other classes, ie a TokenError class to spearate them further
+
 global $authInstance;
 $authInstance = null;
 
 class AuthError {
-
-    //TODO: Move to some sort of reflection idea so only the important one is created?
 
     public $AUTH;
         public $TOKEN;
@@ -94,6 +96,9 @@ class AuthError {
 
 }
 
+//This is the global access point of access for the AuthError class
+//It has a caching mechanism so that the class is only instantiated
+//when needed and once only.
 function authError() {
     global $authInstance;
     if ($authInstance == null)
