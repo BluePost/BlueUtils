@@ -1,5 +1,6 @@
 <?php
 namespace BluePost;
+//TODO: Work with BlueError to stop requiring useless builds
 class AjaxResponse {
     
     private $response = Array();

@@ -2,6 +2,11 @@
 
 namespace BluePost;
 
+/**
+ * Class ErrorScheme
+ * Represents an error type
+ * @package BluePost
+ */
 class ErrorScheme {
 
     /**
@@ -17,6 +22,12 @@ class ErrorScheme {
      */
     public $SUPER = null;
 
+    /**
+     * ErrorScheme constructor.
+     * @param string $code The code of the error
+     * @param string $message The human readable message
+     * @param ErrorScheme $super The container ErrorScheme
+     */
     function __construct($code, $message, $super = null)
     {
         $this->CODE = $code;
@@ -24,6 +35,10 @@ class ErrorScheme {
         $this->SUPER = $super;
     }
 
+    /**
+     * Returns the codes as an array (takes the parents' codes)
+     * @return array
+     */
     function codes() {
         if ($this->SUPER == null) return array($this->CODE);
         $codes = $this->SUPER->codes();
@@ -32,6 +47,8 @@ class ErrorScheme {
     }
 
     /**
+     * Return this error as an array
+     * @see blueErrorArray
      * @return array
      */
     function  build () {
@@ -39,13 +56,14 @@ class ErrorScheme {
     }
 
     /**
-     * @param $code
-     * @param $message
+     * Dynamically create a sub error from this scheme and return it as an array
+     * @param string $code The code of the sub error
+     * @param string $message The human readable message for the errors
      * @return array
      */
     function custom($code, $message) {
         //TODO: Make this more efficient
-        return (new ErrorScheme($code, $message))->build();
+        return (new ErrorScheme($code, $message, $this))->build();
     }
 
 }
