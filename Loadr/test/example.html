@@ -1,0 +1,32 @@
+<html>
+<head>
+    <title>Loadr Tests</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.js"></script>
+    <link rel="stylesheet" href="../lib/loader.css"/>
+    <script src="../lib/loader.js"></script>
+    <script src="../assets/handlebars.js"></script>
+    <include source="test-template.bars.html" onDownload="testLoadr()" id="test"></include>
+</head>
+<body>
+<h1>Hello</h1>
+<div id="content"></div>
+<script>
+    //Function caled when the template is downloaded
+    function testLoadr() {
+        renderName("Freddie");
+        renderName("James");
+    }
+
+    function testLoadr2() {
+        renderName("Name");
+    }
+
+    //Renders the template with a specific name
+    function renderName (name) {
+        Loadr.renderTemplateAppend("#test", "#content", {name:name})
+    }
+    //Download all templates when the page has loaded
+    Loadr.load(testLoadr2)
+</script>
+</body>
+</html>

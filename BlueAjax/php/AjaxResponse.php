@@ -21,7 +21,12 @@ class AjaxResponse {
     */
    function assert($test, $error, $json = TRUE) {
        if (!$test) {
-           die($json ? json_encode(array_merge($error, $this->response)) : $error);
+           if ($json) {
+               $this->respond($error);
+           }
+           else {
+               die($error);
+           }
        }
    }
 

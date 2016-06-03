@@ -4,9 +4,6 @@ Super-Simple framework for making AJAX easier to deal with on the PHP side. It a
 ### JavaScript
 The javascript components are all in JS/BlueAjax.js file.
 
-## TODO
-* Make all AjaxResponse functions use respond()
-
 ## Using BlueAjax
 The framework is set up to use "success" and "error" to communicate data. Both the php and js sides rely on this. The data is a string, so we
 recommend that you use them to communicate the status of the request. This allows for human readable response messages without an unnecessary

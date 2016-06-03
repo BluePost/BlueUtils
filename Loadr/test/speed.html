@@ -1,0 +1,39 @@
+<html>
+  <head>
+    <title>Loadr Tests</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.js"></script>
+    <link rel="stylesheet" href="../lib/loader.css"/>
+    <script src="../lib/loader.js"></script>
+    <script src="../assets/handlebars.js"></script>
+    <include source="test-template.bars.html" onDownload="testLoadr()" id="test"></include>
+  </head>
+  <body>
+    <h1>Hello</h1>
+    <div id="content"></div>
+    <script>
+
+      function testLoadr() {
+        renderName( "Freddie", false )
+        renderName( "Freddie", true  )
+      }
+
+      function renderName (name, noCache) {
+        console.log("Testing " + (noCache ? "without" : "with") + " cache")
+        var totalTime = 0
+        for (j = 0; j < 10; ++j) {
+          console.log(j)
+          start = new Date().getTime();
+          for (i = 0; i < 5000; ++i){
+            Loadr.renderTemplateHTML("#test", "#content", {name:name})
+            if (noCache) Loadr.clearCache()
+          }
+          end = new Date().getTime();
+          totalTime += end - start;
+        }
+        console.log('Average Execution time: ' + totalTime / 10);
+      }
+
+      Loadr.load()
+    </script>
+  </body>
+</html>
