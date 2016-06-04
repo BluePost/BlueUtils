@@ -16,7 +16,7 @@ Loadr.load = function (onComplete, force, clearCache) {
 
     //Select all of the includes with a source attribute
     var includes = $("include[source]");
-    console.log(includes)
+    console.log(includes);
 
     //Array of booleans that are true if the template is downloaded
     var includesProcessed = [];
