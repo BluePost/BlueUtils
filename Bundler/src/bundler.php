@@ -10,7 +10,7 @@ if (php_sapi_name() != "cli") die("This is a cli only application");
 //[ SUCCESS ]
 //[  INFO   ]
 
-$shortopts = "r:c:y";
+$shortopts = "r:c:yf";
 
 $options = getopt($shortopts);
 //var_dump($options);
@@ -34,7 +34,7 @@ if (!$CONFIG_FILE) die("[  FATAL  ] Config file does not exist\n");
 $BUNDLER_CONFIG_ARRAY = json_decode($CONFIG_FILE, true);
 print("[ SUCCESS ] Config file " . $CONFIG_FILEPATH . " read\n");
 
-var_dump($BUNDLER_CONFIG_ARRAY);
+//var_dump($BUNDLER_CONFIG_ARRAY);
 
 // Check that files have been specified and if is a directory or an array of files
 if (!isset($BUNDLER_CONFIG_ARRAY["files"]) || !is_array($BUNDLER_CONFIG_ARRAY["files"])) die ("[  FATAL  ] Files array is not present in config file\n");
@@ -69,7 +69,7 @@ if (!isset($options["y"])) {
     $response = readline("y/n >");
     if ($response != "y") die("Exiting...\n");
 }
-
+echo("\n");
 //Setup twig
 $TWIG_LOADER = new Twig_Loader_Filesystem(getcwd() . "/" .$TWIG_DIR);
 $TWIG = new Twig_Environment($TWIG_LOADER, Array());
@@ -78,7 +78,16 @@ $TWIG = new Twig_Environment($TWIG_LOADER, Array());
 
 //Create the new release folder
 $newReleasePath = "releases/" . $RELEASE_STRING;
-if (file_exists($newReleasePath)) die("[  FATAL  ] Release already exisits - Please try again\n");
+if  (file_exists($newReleasePath)) {
+    if (!isset($options["f"])) {
+        die("[  FATAL  ] Release already exisits - Please try again\n");
+    }
+    else {
+        print ("[  WARN   ] Release already exists, deleting\n");
+        delTree($newReleasePath);
+    }
+}
+
 
 mkdir($newReleasePath, 0777, true);
 
