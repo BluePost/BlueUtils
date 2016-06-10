@@ -17,7 +17,7 @@ $options = getopt($shortopts);
 
 //Check that a config file is passed, if not assume config.json
 if (!isset($options["c"]) || $options["c"] == "") {
-    print("[  WARN   ] No config file specified, assuming config.jon\n");
+    print("[  WARN   ] No config file specified, assuming config.json\n");
     $CONFIG_FILEPATH = "config.json";
 }
 else {
@@ -45,7 +45,15 @@ $TWIG_DIR = $BUNDLER_CONFIG_ARRAY["twig_dir"];
 
 // Check that a file with the config array is present
 if (!isset($BUNDLER_CONFIG_ARRAY["pageopts_file"]) || $BUNDLER_CONFIG_ARRAY["pageopts_file"] == "" ) die ("[  FATAL  ] Page options file is not present in config file\n");
-$PAGEOPTS = $BUNDLER_CONFIG_ARRAY["pageopts_file"];
+$PAGEOPTS_FILE = $BUNDLER_CONFIG_ARRAY["pageopts_file"];
+
+if (!isset($BUNDLER_CONFIG_ARRAY["pageopts_var"]) || $BUNDLER_CONFIG_ARRAY["pageopts_var"] == "" ) {
+    print ("[  WARN  ] Page options variable is not present in config file, assuming CONFIG\n");
+    $PAGEOPTS_VAR = "CONFIG";
+}
+else {
+    $PAGEOPTS_VAR = $BUNDLER_CONFIG_ARRAY["pageopts_var"];
+}
 
 if (!isset($BUNDLER_CONFIG_ARRAY["static_file_dir"]) || $BUNDLER_CONFIG_ARRAY["static_file_dir"] == "") {
     print ("[  WARN   ] Static directory not specified, assuming 'static/'");
@@ -60,7 +68,7 @@ print ("\n[  INFO   ] Configuration for this bundle:\n");
 
 print ("[  INFO   ] Files = " . implode($FILES, ", ") . "\n");
 print ("[  INFO   ] Release number = $RELEASE_STRING\n");
-print ("[  INFO   ] Page Options PHP for import = " . $PAGEOPTS . "\n");
+print ("[  INFO   ] Page Options PHP for import = " . $PAGEOPTS_FILE . "\n");
 print ("[  INFO   ] Twig directory = $TWIG_DIR\n");
 
 // If the user hasn't overridden, check that they want to continue
@@ -93,8 +101,9 @@ mkdir($newReleasePath, 0777, true);
 
 xcopy(getcwd() . "/" . $STATIC_DIR, $newReleasePath . "/" . $STATIC_DIR);
 
-require_once $PAGEOPTS;
-$CONFIG = Array("CONFIG" => $CONFIG);
+//FIXME: Fix this horrible thing
+require_once $PAGEOPTS_FILE;
+$PAGEDATA = Array("CONFIG" => $$PAGEOPTS_VAR);
 
 $count = 0;
 foreach ($FILES as $PAGENAME=>$PAGE) {
@@ -102,12 +111,12 @@ foreach ($FILES as $PAGENAME=>$PAGE) {
     //TODO: Optimise
     if ($count == 0) {
         //TODO: Allow naming in config file
-        fwrite(fopen($newReleasePath . '/index.html', "w"), $TWIG->render($PAGE, $CONFIG));
+        fwrite(fopen($newReleasePath . '/index.html', "w"), $TWIG->render($PAGE, $PAGEDATA));
     }
 
     else {
         mkdir($newReleasePath . "/" . $PAGENAME,0777,true);
-        fwrite(fopen($newReleasePath . "/" . $PAGENAME . '/index.html', "w"),$TWIG->render($PAGE, $CONFIG));
+        fwrite(fopen($newReleasePath . "/" . $PAGENAME . '/index.html', "w"),$TWIG->render($PAGE, $PAGEDATA));
     }
     $count++;
 
