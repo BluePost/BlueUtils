@@ -1,4 +1,4 @@
-m<?php
+<?php
 require_once __DIR__ . '/composer/vendor/autoload.php';
 
 //Functions
@@ -65,15 +65,17 @@ if (php_sapi_name() == "cli") { //Command line mode, this will bundle
 	if (file_exists($newreleasepath)) die("Release already exisits - Make a new one!!\n\n");
 	mkdir($newreleasepath,0777,true);
 
+	echo($newreleasepath . "\n");
+    
 	xcopy(__DIR__ . '/weblibs/', $newreleasepath. '/weblibs/'); //Copy required files
 
 	$counter = 0;
 	foreach ($PAGES as $PAGENAME => $PAGE) {
 		if ($counter == 0) {
-			fwrite(fopen($newreleasepath . 'index.html', "w"),twigrender($PAGE['TWIG']));
+			fwrite(fopen($newreleasepath . '/index.html', "w"),twigrender($PAGE['TWIG']));
 		} else {
 			mkdir($newreleasepath . $PAGENAME,0777,true);
-			fwrite(fopen($newreleasepath . $PAGENAME . '/index.html', "w"),twigrender($PAGE['TWIG']));
+			fwrite(fopen($newreleasepath . "/". $PAGENAME . '/index.html', "w"),twigrender($PAGE['TWIG']));
 		}
 		$counter++;
 	}

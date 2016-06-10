@@ -1,0 +1,9 @@
+{
+	"files" : {
+		"index" : "main.twig",
+		"test" : "test.twig"	
+	},
+	"pageopts_file" : "config.php",
+	"static_file_dir" : "/static",
+	"twig_dir" : "/twig"
+}
