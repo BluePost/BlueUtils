@@ -10,6 +10,8 @@ if (php_sapi_name() != "cli") die("This is a cli only application");
 //[ SUCCESS ]
 //[  INFO   ]
 
+//================================================ Settings ================================================//
+
 $shortopts = "r:c:yf";
 
 $options = getopt($shortopts);
@@ -17,8 +19,8 @@ $options = getopt($shortopts);
 
 //Check that a config file is passed, if not assume config.json
 if (!isset($options["c"]) || $options["c"] == "") {
-    print("[  WARN   ] No config file specified, assuming config.json\n");
-    $CONFIG_FILEPATH = "config.json";
+    print("[  WARN   ] No config file specified, assuming config.php\n");
+    $CONFIG_FILEPATH = "config.php";
 }
 else {
     $CONFIG_FILEPATH = $options["c"];
@@ -29,10 +31,9 @@ if (!isset($options["r"]) || $options["r"] == "") die("[  FATAL  ] No release st
 $RELEASE_STRING = $options["r"];
 
 // Read the config file
-$CONFIG_FILE = getFileConts($CONFIG_FILEPATH);
-if (!$CONFIG_FILE) die("[  FATAL  ] Config file does not exist\n");
-$BUNDLER_CONFIG_ARRAY = json_decode($CONFIG_FILE, true);
-print("[ SUCCESS ] Config file " . $CONFIG_FILEPATH . " read\n");
+require_once ($CONFIG_FILEPATH);
+if (!isset($BUNDLER_CONFIG_ARRAY)) die("[  FATAL  ] Config array not set\n");
+print("[ SUCCESS ] Config file found and read");
 
 //var_dump($BUNDLER_CONFIG_ARRAY);
 
@@ -62,6 +63,8 @@ if (!isset($BUNDLER_CONFIG_ARRAY["static_file_dir"]) || $BUNDLER_CONFIG_ARRAY["s
 else {
     $STATIC_DIR = $BUNDLER_CONFIG_ARRAY["static_file_dir"];
 }
+
+//================================================ Confirmation ================================================//
 
 // Display info to user
 print ("\n[  INFO   ] Configuration for this bundle:\n");

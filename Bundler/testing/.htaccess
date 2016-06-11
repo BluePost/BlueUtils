@@ -1,0 +1,2 @@
+RewriteEngine on
+ErrorDocument 404 /working/BlueUtils/Bundler/testing/index.php
