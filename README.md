@@ -4,6 +4,7 @@ Simple utils for PHP and JavaScript
 ## Contents
 * BlueAjax  - Simple utilities for dealing with api requests in php and JS
 * BlueError - A library for standardising API error methods
+* Bundler - A utility that allows development of twig files that can then be compiled to static HTML files
 
 ## Getting started
 This lib is not currently available through composer so instead just clone the repo and require `BlueUtils.php`
