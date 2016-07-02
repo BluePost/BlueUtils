@@ -49,11 +49,27 @@ Bundler uses the same options as live-serve as well as:
 
 * `static_file_dir` = The directory of static resources to be copied (i.e. JS scripts) [Defaults to `/static`]
 
-## Trying it out
+### Trying it out
 To try this out simply go to the testing folder inside the source. Update the `.htaccess` file to point to the correct file, as well as the `config.php` base_url option and then you can use live serve. To Create a static release use:
 ```bash
 $ php ../src/bundler.php -r 1.0
 ```
 
-### Directories
-You may want to store your twig files in separate directories for organisation. Bundler can support this as long as the correct path is included in the config file. 
+## Directories
+You may want to store your twig files in separate directories for organisation. Bundler can support this as long as the correct path is included in the config file. If you have a file that acts as the index
+ for a directory that has other twig files, do not have a leading or trailing slash in the name, or it will not work with live-serve.
+ 
+ i.e test_dir below:
+ 
+```php
+$BUNDLER_CONFIG_ARRAY = Array (
+    "files" => Array (
+        "index" => "main.twig",
+        "test"   => "test.twig",
+        "404"	=> "404.twig",
+        "test_dir" => "test_dir/index.twig",
+        "test_dir/other" => "test_dir/other.twig"
+    ),
+    ...
+);
+```
