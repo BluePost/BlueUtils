@@ -1,6 +1,7 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+header("HTTP/1.1 200 OK");
 
 //Require in TWIG and the config file
 require_once (__DIR__ . "/vendor/autoload.php");
@@ -40,7 +41,7 @@ $pathFinderPath = $pathFinderRequest["path"];
 $pathFinderResult = trim(str_replace(basename($_SERVER['SCRIPT_NAME']), '', $pathFinderPath), '/');
 $pathFinderResult = explode('/', $pathFinderResult);
 
-$pathFinderMax_level = 100;
+$pathFinderMax_level = 5;
 while ($pathFinderMax_level < count($pathFinderResult)) {
     unset($pathFinderResult[0]);
 }
@@ -54,15 +55,11 @@ $PAGEDATA = Array("CONFIG" => $$PAGEOPTS_VAR);
 $pathFinderResult = implode('/', $pathFinderResult);
 
 if (isset($BUNDLER_CONFIG_ARRAY["base_url"]))
-    $pathFinderResult = trim(str_replace($BUNDLER_CONFIG_ARRAY["base_url"], "", $pathFinderResult),"/");
-
-//var_dump($pathFinderResult);
-//var_dump($FILES);
-
+    $pathFinderResult = str_replace($BUNDLER_CONFIG_ARRAY["base_url"], "", $pathFinderResult);
 
 if ($pathFinderResult == "")
     $PAGE = array_values($FILES)[0];
-elseif (!isset($FILES[$pathFinderResult]))
+elseif (!isset($PAGES[$pathFinderResult]))
     $PAGE = $FILES['404'];
 else
     $PAGE = $FILES[$pathFinderResult];
