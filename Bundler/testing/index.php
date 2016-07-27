@@ -46,7 +46,7 @@ while ($pathFinderMax_level < count($pathFinderResult)) {
     unset($pathFinderResult[0]);
 }
 
-//Require the pageoptions file (if it is the orriginal config file this wont happen
+//Require the pageoptions file (if it is the original config file this wont happen
 require_once $PAGEOPTS_FILE;
 if (!isset($$PAGEOPTS_VAR)) $$PAGEOPTS_VAR = Array();
 $PAGEDATA = Array("CONFIG" => $$PAGEOPTS_VAR);
@@ -56,10 +56,6 @@ $pathFinderResult = implode('/', $pathFinderResult);
 
 if (isset($BUNDLER_CONFIG_ARRAY["base_url"]))
     $pathFinderResult = trim(str_replace($BUNDLER_CONFIG_ARRAY["base_url"], "", $pathFinderResult),"/");
-
-//var_dump($pathFinderResult);
-//var_dump($FILES);
-
 
 if ($pathFinderResult == "")
     $PAGE = array_values($FILES)[0];
