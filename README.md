@@ -5,9 +5,34 @@ Simple utils for PHP and JavaScript
 * BlueAjax  - Simple utilities for dealing with api requests in php and JS
 * BlueError - A library for standardising API error methods
 * Bundler - A utility that allows development of twig files that can then be compiled to static HTML files
+* Loadr - A JS utility for loading in handlebars template
+* Setup - A script for initialising a new project
 
 ## Getting started
-This lib is not currently available through composer so instead just clone the repo and require `BlueUtils.php`
+To start a new project do the following:
+* Clone the repo into an empty project folder
+* `cd` into `BlueUtils/Setup`
+* Execute `./setup.sh -n`
+* To update the BlueUtils components do this:
+  * `git pull`
+  * `cd Setup`
+  * `./setup` (VERY IMPORTANT TO REMEMBER NOT INCLUDE a `-n`)
+
+## TODO
+
+### Loadr
+* Use promises for the main object
+  * Find a way to have default actions
+* Add a default onFail option
+
+### BlueAjax
+
+### BlueError
+
+### Bundler
+
+### Setup
+* Allow custom writing of the .htaccess file
 
 ## Contributing
 To contribute please submit a pull request
