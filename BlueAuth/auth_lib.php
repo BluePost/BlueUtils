@@ -146,7 +146,7 @@
             //Get all login attempts in the last 5 mins
             $this->db->where("auth_login_attempt_userid", $user["auth_userid"]);
             $this->db->where("auth_login_attempt_successful", 0);
-            $this->db->where("auth_login_attempt_time > NOW() - INTERVAL 5 MINUTE");
+            $this->db->where("auth_login_attempt_time > NOW() - INTERVAL 2 MINUTE");
             $this->db->get("auth_login_attempts");
 
             //Check that there haven't been more than 5 login attempts in the last 5 mins
