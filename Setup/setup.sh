@@ -29,7 +29,7 @@ if [ "$update" = true ] ; then
 	cp ../Bundler/src/live-serve/.htaccess ../../
 	cp basic/config.php ../..
 	cp basic/header.php ../../helpers/
-	
+	cp basic/api_config.php ../../helpers/
 
 	cd ../..
 	echo "Requiring twig"
