@@ -18,20 +18,20 @@ done
 
 # Add the basic units of the project
 mkdir ../../helpers ../../display ../../api ../../static ../../static/scripts ../../static/templates
-cp ../BlueAjax ../BlueError ../BlueUtils.php ../../helpers -r
-cp ../Bundler ../../ -r
-cp ../Bundler/src/live-serve/index.php ../../
-cp ../Loadr ../../static -r
-cp ../BlueAjax/JS/BlueAjax.js ../../static/scripts/
-cp ../BlueAuth/ ../../helpers/BlueAuth -r
+\cp ../BlueAjax ../BlueError ../BlueUtils.php ../../helpers -fr
+\cp ../Bundler ../../ -fr
+\cp ../Bundler/src/live-serve/index.php ../../ -f
+\cp ../Loadr ../../static -fr
+\cp ../BlueAjax/JS/BlueAjax.js ../../static/scripts/ -f
+\cp ../BlueAuth/ ../../helpers/BlueAuth -fr
 
 if [ "$update" = true ] ; then
-	cp ../Bundler/src/live-serve/.htaccess ../../
-	cp basic/config.php ../..
-	cp basic/header.php ../../helpers/
-	cp basic/api_config.php ../../helpers/
+	\cp ../Bundler/src/live-serve/.htaccess ../../ -f
+	\cp basic/config.php ../.. -f
+	\cp basic/header.php ../../helpers/ -f
+	\cp basic/api_config.php ../../helpers/ -f
 
-	cp basic/auth_api/* ../../api
+	\cp basic/auth_api/* ../../api -f
 
 	cd ../..
 	echo "Requiring twig"
