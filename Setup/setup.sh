@@ -23,12 +23,14 @@ cp ../Bundler ../../ -r
 cp ../Bundler/src/live-serve/index.php ../../
 cp ../Loadr ../../static -r
 cp ../BlueAjax/JS/BlueAjax.js ../../static/scripts/
+cp ../BlueAuth/ ../../helpers/BlueAuth -r
 
 if [ "$update" = true ] ; then
 	cp ../Bundler/src/live-serve/.htaccess ../../
 	cp basic/config.php ../..
 	cp basic/header.php ../../helpers/
 	
+
 	cd ../..
 	echo "Requiring twig"
 	composer require twig/twig
