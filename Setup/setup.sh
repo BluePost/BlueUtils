@@ -34,5 +34,6 @@ if [ "$update" = true ] ; then
 	cd ../..
 	echo "Requiring twig"
 	composer require twig/twig
+	composer require joshcam/mysqli-database-class
 
 fi
