@@ -85,8 +85,8 @@ class AuthError {
             {
                 $this->SIGNUP_PASSWORD_TOOSHORT = new \BluePost\ErrorScheme("TS", "Password is too short", $this->SIGNUP_PASSWORD);
             }
-            $this->SIGNUP_ALREADY_TAKEN = new \BluePost\ErrorScheme("AT", "Unique information is already taken");
-            $this->SIGNUP_INSERT_ERROR = new \BluePost\ErrorScheme("INSF", "Failed to insert user into the database");
+            $this->SIGNUP_ALREADY_TAKEN = new \BluePost\ErrorScheme("AT", "Unique information is already taken", $this->SIGNUP);
+            $this->SIGNUP_INSERT_ERROR = new \BluePost\ErrorScheme("INSF", "Failed to insert user into the database", $this->SIGNUP);
         }
     }
 

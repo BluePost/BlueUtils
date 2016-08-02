@@ -31,6 +31,8 @@ if [ "$update" = true ] ; then
 	cp basic/header.php ../../helpers/
 	cp basic/api_config.php ../../helpers/
 
+	cp basic/auth_api/* ../../api
+
 	cd ../..
 	echo "Requiring twig"
 	composer require twig/twig
