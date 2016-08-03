@@ -137,6 +137,8 @@
             if (!isset($password) || $password == "" || $password == null)
                 return authError()->LOGIN_NOTSET->custom("PW", "Password was not set");
 
+            $username = strtolower($username);
+
             //Get the user
             $this->db->where("auth_username", sanitizestring($username));
             $user = $this->db->getOne("auth_users");
