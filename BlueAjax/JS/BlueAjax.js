@@ -166,7 +166,8 @@ function AjaxRequestFactoryFactory (base, defaultData, type, onError, onSuccess,
 
     return function (path, data, type) {
         type = typeof type !== 'undefined' ? type : me.type;
-        return new AjaxRequest(type, me.base + path, $.extend({}, me.defaultData, data),  me.successKey, me.errorKey).onError(me.onError).onSuccess(me.onSuccess).addData(data);
+        return new AjaxRequest(type, me.base + path, $.extend({}, me.defaultData, data),  me.successKey, me.errorKey)
+            .onError(me.onError).onSuccess(me.onSuccess).addData(data).onBadJSON(me.onBadJSON).onFail(me.onFail);
     }
 
 }
