@@ -17,7 +17,7 @@ $shortopts = "r:c:yf";
 $options = getopt($shortopts);
 //var_dump($options);
 
-//Check that a config file is passed, if not assume config.json
+//Check that a config file is passed, if not assume config.php
 if (!isset($options["c"]) || $options["c"] == "") {
     print("[  WARN   ] No config file specified, assuming config.php\n");
     $CONFIG_FILEPATH = "config.php";
@@ -109,15 +109,17 @@ require_once $PAGEOPTS_FILE;
 $PAGEDATA = Array("CONFIG" => $$PAGEOPTS_VAR);
 
 $count = 0;
+$PAGEDATA['PAGE_EXTENSION'] = '/index.html';
 foreach ($FILES as $PAGENAME=>$PAGE) {
 
     //TODO: Optimise
     if ($count == 0) {
+		$PAGEDATA['PATH_START'] = '';
         //TODO: Allow naming in config file
         fwrite(fopen($newReleasePath . '/index.html', "w"), $TWIG->render($PAGE, $PAGEDATA));
     }
-
     else {
+		$PAGEDATA['PATH_START'] = '../';
         mkdir($newReleasePath . "/" . $PAGENAME,0777,true);
         fwrite(fopen($newReleasePath . "/" . $PAGENAME . '/index.html', "w"),$TWIG->render($PAGE, $PAGEDATA));
     }
@@ -126,4 +128,3 @@ foreach ($FILES as $PAGENAME=>$PAGE) {
     print ("[ SUCCESS ] Bundled file $PAGENAME\n");
 
 }
-

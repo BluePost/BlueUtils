@@ -15,7 +15,7 @@ function AjaxRequest(method, resource, data, successKey, errorKey) {
     this.successKey = typeof successKey !== 'undefined' ?  successKey : "success";
     this.errorKey = typeof errorKey !== 'undefined' ?  errorKey : "error";
     this.resource = resource;
-    this.method = method
+    this.method = method;
 
     this.onErrorFunction = function (data) {console.log("ERROR");};
 
@@ -116,22 +116,42 @@ function AjaxRequest(method, resource, data, successKey, errorKey) {
  * @param type {string} - Default method ie GET or POST
  * @param onError {function} - Default on error handler
  * @param onSuccess {function} - Default on success handler
+ * @param onBadJson {function} - Default function called when JSON is not parsed
+ * @param onFail {function} - Default function called when the HTTP fails (ie 500 or 404)
  * @param successKey {string}
  * @param errorKey {string}
  * @param log {boolean}
  * @returns {Function}
  */
-function AjaxRequestFactoryFactory (base, defaultData, type, onError, onSuccess,  successKey, errorKey, log) {
+function AjaxRequestFactoryFactory (base, defaultData, type, onError, onSuccess, onBadJson, onFail, successKey, errorKey, log) {
 
     var me = {};
 
-    me.type = typeof type !== 'undefined' ?  type : "GET";
-    me.defaultData = typeof defaultData !== 'undefined' ?  defaultData : {};
-    me.onError = typeof onError !== 'undefined' ?  onError : function (data){console.log("ERROR");};
-    me.onSuccess = typeof onSuccess !== 'undefined' ?  onSuccess : function (data){console.log("SUCCESS");};
-    me.log = typeof log !== 'undefined' ?  log : false;
-    me.successKey = successKey;
-    me.errorKey = errorKey;
+    me.type = (typeof type !== 'undefined' && type != null)
+        ?  type : "GET";
+    me.defaultData = (typeof defaultData !== 'undefined' && defaultData != null)
+        ?  defaultData : {};
+
+    me.onError = (typeof onError !== 'undefined' && onError != null)
+        ?  onError : function (data){console.log("ERROR");};
+    me.onSuccess = (typeof onSuccess !== 'undefined' && onError != null)
+        ?  onSuccess : function (data){console.log("SUCCESS");};
+    me.onBadJSON = (typeof onBadJson !== 'undefined' && onBadJson != null)
+        ? onBadJson : function (data) {
+                console.log("Bad JSON returned from the API");
+            };
+    me.onFail = (typeof onFail !== 'undefined' && onFail != null)
+        ? onFail : function (data) {
+                console.log("The connection to the API failed")
+            };
+
+
+    me.log = (typeof log !== 'undefined' && log != null)
+        ?  log : false;
+    me.successKey = (typeof successKey !== 'undefined' && successKey != null)
+        ? successKey : "success";
+    me.errorKey = (typeof errorKey !== 'undefined' && errorKey != null)
+        ? errorKey : "error";
     me.base = base;
 
     if (log) {

@@ -19,7 +19,7 @@
         private $db;
 
         //60 Mins
-        private $TOKEN_TIME_SHORT = 60 * 60;
+        private $TOKEN_TIME_SHORT = 3 * 60 * 60;
         //30 days
         private $TOKEN_TIME_LONG  = 30 * 24 * 60 * 60;
 
@@ -176,7 +176,7 @@
             //TODO: Email verification
             //Login attempt has been successful so record that
             $this->createLoginAttempt($user["auth_userid"], $this->CURRENT_IP, 1);
-            $token = $this->generateToken($user["auth_userid"], $isApp);
+            $token = $this->generateToken($user["auth_userid"], $isApp, FALSE, FALSE);
 
             $token["user"] = $user;
             return $token;

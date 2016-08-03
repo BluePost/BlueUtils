@@ -68,5 +68,8 @@ elseif (!isset($FILES[$pathFinderResult]))
 else
     $PAGE = $FILES[$pathFinderResult];
 
+//Liveserve only works in the root of a directory
+$PAGEDATA['PATH_START'] = '/';
+$PAGEDATA['PAGE_EXTENSION'] = '';
 //Render the page
 die($TWIG->render($PAGE, $PAGEDATA));
