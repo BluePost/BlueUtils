@@ -57,7 +57,7 @@ else {
 }
 
 if (!isset($BUNDLER_CONFIG_ARRAY["static_file_dir"]) || $BUNDLER_CONFIG_ARRAY["static_file_dir"] == "") {
-    print ("[  WARN   ] Static directory not specified, assuming 'static/'");
+    print ("[  WARN   ] Static directory not specified, assuming 'static/'\n");
     $STATIC_DIR = "static/";
 }
 else {
