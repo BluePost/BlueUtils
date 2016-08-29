@@ -7,7 +7,7 @@ CREATE TABLE auth_login_attempts
     auth_login_attempt_os VARCHAR(500),
     auth_login_attempt_useragent VARCHAR(5000),
     auth_login_attempt_browser VARCHAR(500),
-    auth_login_attempt_time TIMESTAMP DEFAULT 'CURRENT_TIMESTAMP' NOT NULL,
+    auth_login_attempt_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     auth_login_attempt_userid INT(100) NOT NULL
 );
 CREATE INDEX auth_login_attempts___user ON auth_login_attempts (auth_login_attempt_userid);
@@ -36,7 +36,7 @@ CREATE TABLE auth_users
     auth_password_hash VARCHAR(300) NOT NULL,
     auth_password_salt_1 VARCHAR(100) NOT NULL,
     auth_password_salt_2 VARCHAR(100) NOT NULL,
-    auth_created TIMESTAMP DEFAULT 'CURRENT_TIMESTAMP' NOT NULL,
+    auth_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     auth_signup_token VARCHAR(255),
     auth_suspended TINYINT(1) DEFAULT '0' NOT NULL,
     auth_notes VARCHAR(10000) DEFAULT 'Standard User',
