@@ -3,7 +3,9 @@ Simple utils for PHP and JavaScript
 
 ## Contents
 * BlueAjax  - Simple utilities for dealing with api requests in php and JS
+* BlueAuth - A php auth library which is an easy way to set up a simple login/signup API
 * BlueError - A library for standardising API error methods
+* BlueFiller - A simple utility for putting data into html pages
 * Bundler - A utility that allows development of twig files that can then be compiled to static HTML files
 * Loadr - A JS utility for loading in handlebars template
 * Setup - A script for initialising a new project
