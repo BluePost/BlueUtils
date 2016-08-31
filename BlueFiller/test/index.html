@@ -1,0 +1,44 @@
+<html>
+
+<head>
+
+    <title>BlueFiller Test</title>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.js"></script>
+    <script type="text/javascript" src="../src/lib.js"></script>
+
+</head>
+
+<body>
+
+    Here is a top level path element - <span data-page-element="thing"></span><br/>
+    Here is a short path - <span data-page-element="path.element"></span><br/>
+    Here is a longer path - <span data-page-element="path.thing.other.thing"></span><br/>
+
+    <script>
+        pattern = {
+            "thing" : "This is a thing",
+            "path"  : {
+                "element" : "This is an element",
+                "thing" : {
+                    "other" : {
+                        "thing" : "This is a long path"
+                    }
+                }
+            }
+        };
+
+        var filler = new Filler(pattern);
+        filler.fill();
+
+        setTimeout(function () {
+            pattern["thing"] = "Updated thing";
+            pattern["path"]["element"] = "New element";
+            filler.update(pattern)
+        }, 5000)
+
+    </script>
+
+</body>
+
+</html>

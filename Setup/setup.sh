@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # This script will initialise a basic BlueUtils project to get started with
 # It includes an API directory, a basic header script and a fully working live-serve bundler installation
 # It will NOT (currently) adapt the .htaccess file to your path so please set that correctly
@@ -24,6 +25,7 @@ mkdir ../../helpers ../../display ../../api ../../static ../../static/scripts ..
 \cp ../Loadr ../../static -fr
 \cp ../BlueAjax/JS/BlueAjax.js ../../static/scripts/ -f
 \cp ../BlueAuth/ ../../helpers/BlueAuth -fr
+\cp ./../BlueFiller/src/lib.js ./../../static/scripts/BlueFiller.js -fr
 
 if [ "$update" = true ] ; then
 	\cp ../Bundler/src/live-serve/.htaccess ../../ -f
