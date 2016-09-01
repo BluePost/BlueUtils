@@ -42,18 +42,20 @@ Filler.resolve = function (path, patterns, callback) {
             }
             else {
                 console.log("Element " + path_e + " not found");
-                callback("")
+                callback("");
+                return;
             }
         } else {
             if(working[path_e] != undefined)
                 working = working[path_e];
             else {
                 console.log("Element " + path_e + " not found");
-                callback("")
+                callback("");
+                return;
             }
         }
         if (path_i == path.length-1) {
-            callback(working)
+            callback(working);
         }
     })
 
