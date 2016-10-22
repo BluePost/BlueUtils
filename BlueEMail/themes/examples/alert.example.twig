@@ -1,0 +1,32 @@
+{% extends alert %}
+
+{% block header %}
+<td class="alert alert-good">
+	Info: You're approaching your limit. Please upgrade.
+</td>
+{% endblock %}
+{% block content %}
+<tr>
+	<td class="content-block">
+		You have <strong>1 free report</strong> remaining.
+	</td>
+</tr>
+<tr>
+	<td class="content-block">
+		It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English.
+	</td>
+</tr>
+<tr>
+	<td class="content-block">
+		<a href="#" class="btn-primary">Upgrade my account</a>
+	</td>
+</tr>
+<tr>
+	<td class="content-block">
+		Thanks for choosing Company Inc.
+	</td>
+</tr>
+{% endblock %}
+{% block footer %}
+<a href="#">Unsubscribe</a> from these alerts.
+{% endblock %}

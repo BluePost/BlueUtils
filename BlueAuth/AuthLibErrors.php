@@ -3,6 +3,9 @@
 global $authInstance;
 $authInstance = null;
 
+//Make sure that error module is loaded
+require_once get_BU_module("error");
+
 class AuthError {
 
     //TODO: Move to some sort of reflection idea so only the important one is created?
@@ -61,7 +64,7 @@ class AuthError {
             $this->AUTH_NOTSET = new \BluePost\ErrorScheme("NS", "Something was not set", $this->AUTH);
         }
 
-                
+
 
 
 
@@ -74,7 +77,7 @@ class AuthError {
                 $this->LOGIN_INCORRECT_PASSWORD = new \BluePost\ErrorScheme("PW", "Incorrect password", $this->LOGIN_INCORRECT);
             }
             $this->LOGIN_SUSPENDED = new \BluePost\ErrorScheme("SUSP", "User is suspended",$this->LOGIN);
-            
+
         }
 
         $this->SIGNUP = new \BluePost\ErrorScheme("SU", "A signup error occurred");

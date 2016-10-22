@@ -4,8 +4,10 @@ Simple utils for PHP and JavaScript
 ## Contents
 * BlueAjax  - Simple utilities for dealing with api requests in php and JS
 * BlueAuth - A php auth library which is an easy way to set up a simple login/signup API
+* BlueEmail - A wrapper for sending emails easily with SendGrid
 * BlueError - A library for standardising API error methods
 * BlueFiller - A simple utility for putting data into html pages
+* BlueUtilsSettings - The main way of configuring
 * Bundler - A utility that allows development of twig files that can then be compiled to static HTML files
 * Loadr - A JS utility for loading in handlebars template
 * Setup - A script for initialising a new project
@@ -19,8 +21,12 @@ To start a new project do the following:
   * `git pull`
   * `cd Setup`
   * `./setup` (VERY IMPORTANT TO REMEMBER NOT INCLUDE a `-n`)
+* Change settings in the file `helpers/BlueUtilsSettings/BlueUtilsSettings.php`
+
+The file `helpers/header.php` should be included in all API pages. It sets up all php modules (Ajaz, auth, email, error) by default.
 
 ## TODO
+* Update all docs - especially JS (Show where files are after ./setup.sh)
 
 ### Loadr
 * Use promises for the main object
