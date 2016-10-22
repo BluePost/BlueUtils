@@ -23,6 +23,13 @@
 			return new \SendGrid\Email($this->name, $this->email);
 		}
 
+		public function asArray () {
+			return [
+				"name" => $this->name,
+				"email" => $this->email
+			];
+		}
+
 	}
 
 	class Email {
@@ -36,25 +43,30 @@
 		private $twig; //TODO Set this up - it's currently not initalized!
 
 
-		public function __construct ( $FROM, array $TO, array $CC = [], array $BCC = [], $SUBJECT = '') {
+		public function __construct ( $FROM, $TO, $CC = [], $BCC = [], $SUBJECT = '') {
 
 			global $BLUEUTILS_SETTINGS;
 
 			require($BLUEUTILS_SETTINGS->PATH_TO_VENDOR."/autoload.php");
 			$loader = new \Twig_Loader_Filesystem($BLUEUTILS_SETTINGS->PROJECT_ROOT_DIR);
-			$this->twig = new \Twig_Environment($loader);
+			$this->twig = new \Twig_Environment($loader, [
+				"debug" => true
+			]);
+
+			$this->twig->addExtension(new \Twig_Extension_Debug());
+
 
 			$this->sendgrid = new \SendGrid($BLUEUTILS_SETTINGS->SENDGRID_API_KEY); //Set APIKEY
 			$this->sendgridemail = new \SendGrid\Mail(); //Initialize email
 
 			//Set the from address
-			if (is_a($FROM, "Person")) {
-				$FROM = $FROM->asSGEmail();
+			if ($FROM instanceof \SendGrid\Email) {
+				$FROM = new Person($FROM->getName(), $FROM->getEmail());
 			} else if (is_string($FROM)) {
-				$FROM = new \SendGrid\Email(filter_var($FROM, FILTER_SANITIZE_EMAIL), filter_var($FROM, FILTER_SANITIZE_EMAIL));
+				$FROM = new Person(filter_var($FROM, FILTER_SANITIZE_EMAIL), filter_var($FROM, FILTER_SANITIZE_EMAIL));
 			}
-			$this->basicdetails['from'] = $FROM;
-			$this->sendgridemail->setFrom($this->basicdetails['from']);
+			$this->basicdetails['from'] = $FROM->asArray();
+			$this->sendgridemail->setFrom($FROM->asSGEmail());
 
 			//Set the subject
 			$this->basicdetails['subject'] = $SUBJECT;
@@ -68,13 +80,13 @@
 			}
 			$this->basicdetails['to'] = [];
 			foreach ($TO as $email) {
-				if (is_a($email, "Person")) {
-					$email = $email->asSGEmail();
+				if ($email instanceof \SendGrid\Email) {
+					$email = new Person($email->getName(), $email->getEmail());
 				} else if (is_string($email)) {
-					$email = new \SendGrid\Email(filter_var($email, FILTER_SANITIZE_EMAIL), filter_var($email, FILTER_SANITIZE_EMAIL));
+					$email = new Person(filter_var($email, FILTER_SANITIZE_EMAIL), filter_var($email, FILTER_SANITIZE_EMAIL));
 				}
-				$this->basicdetails['to'][] = $email;
-				$this->mainPersonalization->addTo($email);
+				$this->basicdetails['to'][] = $email->asArray();
+				$this->mainPersonalization->addTo($email->asSGEmail());
 			}
 
 
@@ -84,13 +96,13 @@
 			}
 			$this->basicdetails['cc'] = [];
 			foreach ($CC as $email) {
-				if (is_a($email, "Person")) {
-					$email = $email->asSGEmail();
+				if ($email instanceof \SendGrid\Email) {
+					$email = new Person($email->getName(), $email->getEmail());
 				} else if (is_string($email)) {
-					$email = new \SendGrid\Email(filter_var($email, FILTER_SANITIZE_EMAIL), filter_var($email, FILTER_SANITIZE_EMAIL));
+					$email = new Person(filter_var($email, FILTER_SANITIZE_EMAIL), filter_var($email, FILTER_SANITIZE_EMAIL));
 				}
-				$this->basicdetails['cc'][] = $email;
-				$this->mainPersonalization->addCc($email);
+				$this->basicdetails['bcc'][] = $email->asArray();
+				$this->mainPersonalization->addTo($email->asSGEmail());
 			}
 
 			//Setup BCC Messages
@@ -99,13 +111,13 @@
 			}
 			$this->basicdetails['bcc'] = [];
 			foreach ($BCC as $email) {
-				if (is_a($email, "Person")) {
-					$email = $email->asSGEmail();
+				if ($email instanceof \SendGrid\Email) {
+					$email = new Person($email->getName(), $email->getEmail());
 				} else if (is_string($email)) {
-					$email = new \SendGrid\Email(filter_var($email, FILTER_SANITIZE_EMAIL), filter_var($email, FILTER_SANITIZE_EMAIL));
+					$email = new Person(filter_var($email, FILTER_SANITIZE_EMAIL), filter_var($email, FILTER_SANITIZE_EMAIL));
 				}
-				$this->basicdetails['bcc'][] = $email;
-				$this->mainPersonalization->addBcc($email);
+				$this->basicdetails['bcc'][] = $email->asArray();
+				$this->mainPersonalization->addTo($email->asSGEmail());
 			}
 
 			$this->sendgridemail->addPersonalization($this->mainPersonalization);
@@ -186,6 +198,8 @@
 		function send() {
 			if (!isset($this->body['html'])) throw new Exception("No Body Provided");
 			$this->sendgridemail->addHeader("X-BlueEMail", "1");
+
+			//var_dump($this->sendgridemail->jsonSerialize());
 			//Send the damn thing
 			return $this->sendgrid->client->mail()->send()->post($this->sendgridemail);
 		}
