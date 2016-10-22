@@ -79,14 +79,14 @@
     		$this->sendgridemail->addContent($htmlcontent);
 			$this->body['html'] = $htmlcontent;
 		}
-		function addattachment() {
+		function addattachment($filename = 'attachment.txt', $type = 'text/plain', $content = '') {
 			return false; //Yeah not ready for this yet
 			$attachment = new SendGrid\Attachment();
-			$attachment->setContent("TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdC4gQ3JhcyBwdW12");
-			$attachment->setType("application/pdf");
-			$attachment->setFilename("balance_001.pdf");
-			$attachment->setDisposition("attachment");
-			$attachment->setContentId("Balance Sheet");
+			$attachment->setContent($content);
+			$attachment->setType($type); //TODO Validate This
+			$attachment->setFilename($filename);
+			$attachment->setDisposition("attachment"); //Alternative is inline for a picture - but we'll ignore this for now
+			$attachment->setContentId($filename);
 			$this->sendgridemail->addAttachment($attachment);
 		}
 		function googleanylitics() {
