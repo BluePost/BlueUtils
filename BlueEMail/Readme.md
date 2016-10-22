@@ -37,8 +37,9 @@ A complex function used to set the body of the email using a twig template
 * `customtemplatepath` = `path (string)` A complete path to a custom twig template you may be using (including __DIR__ etc.) - Three templates are provided by default, or you can add your own custom one by adding `{% extends customtemplate %}` to the top of your file passed as `twigfilepath`
 
 #### addattachment
-Coming Soon
-
+* `filename` = `string` A filename - like "kitten.png"
+* `type` = `string` The MIME type - you can use `mime_content_type($filepath)` if you like
+* `content` = `string` The file's contents - use `file_get_contents($filepath)`
 #### replyto
 * `replytoemail` = `string` A reply to E-Mail address - will be validated
 
