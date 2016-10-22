@@ -1,86 +1,153 @@
 <?php
 	//BLue Email library by James Bithell
 	/*	SETUP
-	 		requires composer stuff:
+	 		requires composer packages:
 				"sendgrid/sendgrid": "~5.1"
 				"twig/twig" : "~1.26"
 	*/
 	//TODO Require twig and "sendgrid/sendgrid": "~5.1"
-	date_default_timezone_set('UTC');
 	namespace BluePost;
+
+	date_default_timezone_set('UTC');
+
+	class Person {
+
+		private $name, $email;
+
+		public function __construct ($name, $email) {
+			$this->name = $name;
+			$this->email = $email;
+		}
+
+		public function asSGEmail () {
+			return new \SendGrid\Email($this->name, $this->email);
+		}
+
+	}
+
 	class Email {
-		$basicdetails = [];
-		$body = [];
+
+
+		public $basicdetails = [];
+		public $body = [];
+
 		private $sendgrid;
 		private $sendgridemail;
 		private $twig; //TODO Set this up - it's currently not initalized!
-		public function __construct ( $FROM = '', array $TO = [], array $CC = [], array $BCC = [], $SUBJECT = '', $SENDGRIDAPIKEY = '') {
-			$this->sendgrid = new SendGrid\SendGrid($SENDGRIDAPIKEY); //Set APIKEY
-			$this->sendgridemail = new SendGrid\Email(); //Initialize email
+
+
+		public function __construct ( $FROM, array $TO, array $CC = [], array $BCC = [], $SUBJECT = '') {
+
+			global $BLUEUTILS_SETTINGS;
+
+			require($BLUEUTILS_SETTINGS->PATH_TO_VENDOR."/autoload.php");
+			$loader = new \Twig_Loader_Filesystem($BLUEUTILS_SETTINGS->PROJECT_ROOT_DIR);
+			$this->twig = new \Twig_Environment($loader);
+
+			$this->sendgrid = new \SendGrid($BLUEUTILS_SETTINGS->SENDGRID_API_KEY); //Set APIKEY
+			$this->sendgridemail = new \SendGrid\Mail(); //Initialize email
 
 			//Set the from address
-			$this->basicdetails['from'] = filter_var($FROM, FILTER_SANITIZE_EMAIL);
+			if (is_a($FROM, "Person")) {
+				$FROM = $FROM->asSGEmail();
+			} else if (is_string($FROM)) {
+				$FROM = new \SendGrid\Email(filter_var($FROM, FILTER_SANITIZE_EMAIL), filter_var($FROM, FILTER_SANITIZE_EMAIL));
+			}
+			$this->basicdetails['from'] = $FROM;
 			$this->sendgridemail->setFrom($this->basicdetails['from']);
 
 			//Set the subject
 			$this->basicdetails['subject'] = $SUBJECT;
 			$this->sendgridemail->setSubject($this->basicdetails['subject']);
 
+			$this->mainPersonalization = new \SendGrid\Personalization();
+
 			//Setup TO Messages
-			if (is_array($TO)) {
-				$this->basicdetails['to'] = [];
-				foreach ($TO as $emails) {
-					$this->basicdetails['to'][] = filter_var($emails, FILTER_SANITIZE_EMAIL);
-					$this->sendgridemail->addTo(filter_var($emails, FILTER_SANITIZE_EMAIL));
-				}
-			} else {
-				$this->sendgridemail->addTo(filter_var($TO, FILTER_SANITIZE_EMAIL));
-				$this->basicdetails['to'] = [filter_var($TO, FILTER_SANITIZE_EMAIL)];
+			if (!is_array($TO)) {
+				$TO = [$TO];
 			}
+			$this->basicdetails['to'] = [];
+			foreach ($TO as $email) {
+				if (is_a($email, "Person")) {
+					$email = $email->asSGEmail();
+				} else if (is_string($email)) {
+					$email = new \SendGrid\Email(filter_var($email, FILTER_SANITIZE_EMAIL), filter_var($email, FILTER_SANITIZE_EMAIL));
+				}
+				$this->basicdetails['to'][] = $email;
+				$this->mainPersonalization->addTo($email);
+			}
+
+
 			//Setup CC Messages
-			if (is_array($CC)) {
-				$this->basicdetails['cc'] = [];
-				foreach ($CC as $emails) {
-					$this->basicdetails['cc'][] = filter_var($emails, FILTER_SANITIZE_EMAIL);
-					$this->sendgridemail->addCcfilter_var($emails, FILTER_SANITIZE_EMAIL));
-				}
-			} else {
-				$this->sendgridemail->addCc(filter_var($CC, FILTER_SANITIZE_EMAIL));
-				$this->basicdetails['cc'] = [filter_var($CC, FILTER_SANITIZE_EMAIL)];
+			if (!is_array($CC)) {
+				$CC = [$CC];
 			}
+			$this->basicdetails['cc'] = [];
+			foreach ($CC as $email) {
+				if (is_a($email, "Person")) {
+					$email = $email->asSGEmail();
+				} else if (is_string($email)) {
+					$email = new \SendGrid\Email(filter_var($email, FILTER_SANITIZE_EMAIL), filter_var($email, FILTER_SANITIZE_EMAIL));
+				}
+				$this->basicdetails['cc'][] = $email;
+				$this->mainPersonalization->addCc($email);
+			}
+
 			//Setup BCC Messages
-			if (is_array($BCC)) {
-				$this->basicdetails['bcc'] = [];
-				foreach ($BCC as $emails) {
-					$this->basicdetails['bcc'][] = filter_var($emails, FILTER_SANITIZE_EMAIL);
-					$this->sendgridemail->addBcc(filter_var($emails, FILTER_SANITIZE_EMAIL));
-				}
-			} else {
-				$this->basicdetails['bcc'] = [filter_var($BCC, FILTER_SANITIZE_EMAIL)];
-				$this->sendgridemail->addBcc(filter_var($CC, FILTER_SANITIZE_EMAIL));
+			if (!is_array($BCC)) {
+				$BCC = [$BCC];
 			}
+			$this->basicdetails['bcc'] = [];
+			foreach ($BCC as $email) {
+				if (is_a($email, "Person")) {
+					$email = $email->asSGEmail();
+				} else if (is_string($email)) {
+					$email = new \SendGrid\Email(filter_var($email, FILTER_SANITIZE_EMAIL), filter_var($email, FILTER_SANITIZE_EMAIL));
+				}
+				$this->basicdetails['bcc'][] = $email;
+				$this->mainPersonalization->addBcc($email);
+			}
+
+			$this->sendgridemail->addPersonalization($this->mainPersonalization);
+
 			return true;
 		}
-		function body($twigfilepath, $plaintextalternative = false, $customvariables = [], $customtemplatepath = '') {
-			$html = $this->twig->display($twigfilepath, array(
-															'billing' => $this->twig->loadTemplate(__DIR__ . '/themes/billing.twig'), //Load the billing template in case it's based off that
-															'alert' => $this->twig->loadTemplate(__DIR__ . '/themes/alert.twig'), //Load the alert template in case it's based off that
-															'action' => $this->twig->loadTemplate(__DIR__ . '/themes/action.twig'), //Load the action template in case it's based off that
-															'customtemplate' => $this->twig->loadTemplate($customtemplatepath), //Load the custom template if that's being used
-															'customvariables' => $customvariables,
-															'basicdetails' => $this->basicdetails //Pass the basic variables that you can use in twig if you like
-														));
-			if ($plaintextalternative) {
-				$plaincontent = new SendGrid\Content("text/plain", $plaintextalternative);
-	    		$this->sendgridemail->addContent($plaincontent);
+
+
+
+		function setBody($templatePath, $plainTextAlternative = false, $customVariables = [], $customTemplatePath = false) {
+
+			$template = $this->twig->loadTemplate($templatePath);
+
+			if ($customTemplatePath)
+				$customTemplate = loadTemplate($customTemplate);
+			else $customTemplate = false;
+
+			$PAGEDATA = Array (
+				"billing" => $this->twig->loadTemplate('helpers/BlueEMail/themes/billing.twig'),//Load the billing template in case it's based off that
+				"alert" => $this->twig->loadTemplate('helpers/BlueEMail/themes/alert.twig'), //Load the alert template in case it's based off that
+				"action" => $this->twig->loadTemplate('helpers/BlueEMail/themes/action.twig'), //Load the action template in case it's based off that
+				"customTemplate" => $customTemplate,
+				"customVariables" => $customVariables,
+				"basicDetails" => $this->basicdetails
+			);
+
+			$html = $this->twig->render($templatePath, $PAGEDATA);
+
+			if ($plainTextAlternative) {
+				$plaincontent = new \SendGrid\Content("text/plain", $plainTextAlternative);
+				$this->sendgridemail->addContent($plaincontent);
 				$this->body['plaintext'] = $plaincontent;
 			}
-    		$htmlcontent = new SendGrid\Content("text/html", $html);
-    		$this->sendgridemail->addContent($htmlcontent);
+
+  		$htmlcontent = new \SendGrid\Content("text/html", $html);
+  		$this->sendgridemail->addContent($htmlcontent);
 			$this->body['html'] = $htmlcontent;
 		}
-		function addattachment($filename = 'attachment.txt', $type = 'text/plain', $content = '') {
-			return false; //Yeah not ready for this yet
+
+
+		function addAttachment($filename, $type = 'text/plain', $content = '') {
+			return false; //Not implemented
 			$attachment = new SendGrid\Attachment();
 			$attachment->setContent($content);
 			$attachment->setType($type); //TODO Validate This
@@ -89,8 +156,9 @@
 			$attachment->setContentId($filename);
 			$this->sendgridemail->addAttachment($attachment);
 		}
-		function googleanylitics() {
-			return false; //Not yet a feature
+
+		function googleAnalytics() {
+			return false; //Not implemented
 			$ganalytics = new SendGrid\Ganalytics();
 			$ganalytics->setEnable(true);
 			$ganalytics->setCampaignSource("some source");
@@ -101,23 +169,26 @@
 			$tracking_settings->setGanalytics($ganalytics);
 			$this->sendgridemail->setTrackingSettings($tracking_settings);
 		}
+
 		function replyto($replytoemail) {
 			$reply_to = new SendGrid\ReplyTo(filter_var($replytoemail, FILTER_SANITIZE_EMAIL));
 			$this->sendgridemail->setReplyTo($reply_to);
 		}
-		function delaysend($time) {
+
+		function delaySend($time) {
 			if (((string) (int) $timestamp === $timestamp) && ($timestamp <= PHP_INT_MAX) && ($timestamp >= ~PHP_INT_MAX) && $time > time() && (time()+259200) > $time) { //Check valid timestamp
 				$personalization = new SendGrid\Personalization();
 				$personalization->setSendAt();
 				$this->sendgridemail->addPersonalization($personalization);
 			} else return false;
 		}
+
 		function send() {
 			if (!isset($this->body['html'])) throw new Exception("No Body Provided");
 			$this->sendgridemail->addHeader("X-BlueEMail", "1");
 			//Send the damn thing
-			if ($this->sendgrid->send($this->sendgridemail)) return true;
-			else return false;
+			return $this->sendgrid->client->mail()->send()->post($this->sendgridemail);
 		}
+
 	}
 ?>

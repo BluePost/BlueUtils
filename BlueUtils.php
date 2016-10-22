@@ -1,37 +1,33 @@
 <?php
 
-require_once (__DIR__ . "/BlueError/BlueError.php");
-require_once (__DIR__ . "/BlueAjax/php/BlueAjax.php");
-require_once (__DIR__ . "/BlueAuth/auth_lib.php");
+require_once("BlueUtilsSettings/BlueUtilsSettings.php");
 
-function randomstring($length = 10, $stringonly = false) { //Generate a random string
-  $characters = 'abcdefghkmnopqrstuvwxyzABCDEFGHKMNOPQRSTUVWXYZ';
-  if (!$stringonly) $characters .= '0123456789';
-  $charactersLength = strlen($characters);
-  $randomString = '';
-  for ($i = 0; $i < $length; $i++) {
-   $randomString .= $characters[rand(0, $charactersLength - 1)];
+global $BLUEUTILS_SETTINGS;
+$BLUEUTILS_SETTINGS = new BluePost\BlueUtilsSettings();
+
+global $modules_avaliable;
+$modules_avaliable = [
+  "ajax"  => "/BlueAjax/php/BlueAjax.php",
+  "auth"  => "/BlueAuth/auth_lib.php",
+  "email" => "/BlueEMail/BlueEmail.php",
+  "error" => "/BlueError/BlueError.php"
+];
+
+function get_BU_module($name) {
+  global $modules_avaliable;
+  return __DIR__ . $modules_avaliable[$name];
+}
+
+if (isset($BluePost_Modules)) {
+
+  foreach ($BluePost_Modules as $module) {
+    if ($module == "all"){
+      foreach ($modules_avaliable as $modname => $modpath){
+        require_once __DIR__ . $modpath;
+      }
+    } else {
+      require_once get_BU_module($module);
+    }
   }
-  return $randomString;
-}
 
-function sanitizestring($var) {
- global $GLOBALS;
- $var = strip_tags($var);
- $var = htmlentities($var);
- $var = stripslashes($var);
- return mysqli_real_escape_string($GLOBALS['CONN'], $var);
-}
-
-function cleanstring($var) {
- global $GLOBALS;
-
- $config = HTMLPurifier_Config::createDefault();
- $config->set('Cache.DefinitionImpl', null);
- $config->set('AutoFormat.Linkify', true);
- $purifier = new HTMLPurifier($config);
- $clean_html = $purifier->purify($var);
-
- $clean_html = urlencode($clean_html);
- return mysqli_real_escape_string($GLOBALS['CONN'], $clean_html);
 }

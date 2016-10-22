@@ -4,12 +4,12 @@
 # It will NOT (currently) adapt the .htaccess file to your path so please set that correctly
 # It assumes that the project will be in the directory ABOVE the repo (../..)
 # Use with -n to create a new project
-update=false
+new=false
 while getopts "n" opt; do
 	case $opt in
 		n)
 			echo "Running in new mode"
-			update=true
+			new=true
 			;;
 		\?)
 			echo "Invalid option" >&2
@@ -24,20 +24,26 @@ mkdir ../../helpers ../../display ../../api ../../static ../../static/scripts ..
 \cp ../Bundler/src/live-serve/index.php ../../ -f
 \cp ../Loadr ../../static -fr
 \cp ../BlueAjax/JS/BlueAjax.js ../../static/scripts/ -f
-\cp ../BlueAuth/ ../../helpers/BlueAuth -fr
-\cp ./../BlueFiller/src/lib.js ./../../static/scripts/BlueFiller.js -fr
+\cp ../BlueAuth/ ../../helpers/ -fr
+\cp ../BlueFiller/src/lib.js ./../../static/scripts/BlueFiller.js -fr
+\cp ../BlueEMail ../../helpers/ -fr
+\cp ../BlueUtils.php ../../helpers/
+\cp ../BlueUtilsFunctions.php ../../helpers/
 
-if [ "$update" = true ] ; then
+if [ "$new" = true ] ; then
+	\cp ../BlueUtilsSettings ../../helpers/ -rf
+
 	\cp ../Bundler/src/live-serve/.htaccess ../../ -f
+
 	\cp basic/config.php ../.. -f
 	\cp basic/header.php ../../helpers/ -f
-	\cp basic/api_config.php ../../helpers/ -f
 
 	\cp basic/auth_api/* ../../api -f
 
 	cd ../..
-	echo "Requiring twig"
+	echo "Requiring composer packages"
 	composer require twig/twig
+	composer require sendgrid/sendgrid
 	composer require joshcam/mysqli-database-class
 
 fi

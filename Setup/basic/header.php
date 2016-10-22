@@ -7,13 +7,24 @@ ini_set('display_errors', 1);
 if (!isset($SECURE)) $SECURE = false;
 if (!isset($POST)) $POST = true;
 
+require_once (__DIR__ . "/BlueUtilsFunctions.php");
+
+$BluePost_Modules = ["all"];
 require_once(__DIR__ . "/BlueUtils.php");
 
 require_once(__DIR__ . "/api_config.php");
 require_once(__DIR__ . "/../vendor/autoload.php");
 
 //Establish connection to the DB
-$CONN = new mysqli ($CONFIG["DB"]["HOST"], $CONFIG["DB"]["USERNAME"], $CONFIG["DB"]["PASSWORD"], $CONFIG["DB"]["NAME"]);
+
+$CONN = new mysqli (
+  $BLUEUTILS_SETTINGS->DB_CONFIG["HOST"],
+  $BLUEUTILS_SETTINGS->DB_CONFIG["USERNAME"],
+  $BLUEUTILS_SETTINGS->DB_CONFIG["PASSWORD"],
+  $BLUEUTILS_SETTINGS->DB_CONFIG["NAME"]
+);
+
+
 
 //Create the instance of the db library
 $db = new MysqliDb ($CONN);
@@ -56,4 +67,3 @@ if ($SECURE) {
 $GLOBALS["AUTH"] = $AUTH;
 $GLOBALS["USER"] = $AUTH->user();
 $USERDATA = $GLOBALS["USER"];
-
