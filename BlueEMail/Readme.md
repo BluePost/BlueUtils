@@ -27,7 +27,7 @@ If you don't wish to use one of the three templates provided, you can either pla
 * `CC` = `simple array` of E-Mail addresses for the cc (carbon copy) field. A string can also be passed if just one address wanted. Will be validated
 * `BCC` = `simple array` of E-Mail addresses for the bcc (blind carbon copy) field. A string can also be passed if just one address wanted. Will be validated
 * `SUBJECT` = `string` An E-Mail subject - please don't include scripts as most clients will reject this
-
+* `SENDGRIDAPIKEY ` = `string` An API key for SendGrid - get one here: https://sendgrid.com/docs/Classroom/Send/How_Emails_Are_Sent/api_keys.html
 #### body
 
 A complex function used to set the body of the email using a twig template
