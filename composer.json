@@ -1,0 +1,33 @@
+{
+    "name": "BluePost/BlueUtils",
+    "type": "library",
+    "description": "Simple utils for PHP and JavaScript developed by BluePost",
+    "keywords": ["bluepost"],
+    "homepage": "https://github.com/BluePost/BlueUtils",
+    "license": "CC-BY-SA-4.0",
+    "authors": [
+        {
+            "name": "James Bithell",
+            "email": "hi@jbithell.com",
+            "homepage": "http://jbithell.com",
+            "role": "Developer"
+        },
+	{
+            "name": "Freddie Poser",
+            "email": "freddie.poser@gmail.com",
+            "homepage": "https://vogonjeltz.com/",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+	"twig/twig": "~1.0",
+	"sendgrid/sendgrid": "5.1.1",
+	"joshcam/mysqli-database-class":  "v2.6"
+    },
+    "autoload": {
+        "psr-0": {
+            "BlueUtils": "src"
+        }
+    }
+}
