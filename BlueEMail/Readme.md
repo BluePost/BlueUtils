@@ -39,7 +39,7 @@ If you don't wish to use one of the three templates provided, you can either pla
 * `CC` = `BluePost\Person or array of BluePost\Person` of E-Mail addresses for the cc (carbon copy) field. A string can also be passed if just one address wanted. Will be validated
 * `BCC` = `BluePost\Person or array of BluePost\Person` of E-Mail addresses for the bcc (blind carbon copy) field. A string can also be passed if just one address wanted. Will be validated
 * `SUBJECT` = `string` An E-Mail subject - please don't include scripts as most clients will reject this
-
+* `TIMESTAMP` = `int` When the E-Mail should be sent by SendGrid - Number of seconds since the Unix Epoch (January 1 1970 00:00:00 GMT) - Upto 72 hours in advance maximum (due to SendGrid Constraints)
 #### setBody
 This sets the body of the email to a rendered twig template and an option plainTextAlternative
 * `templatePath` = `path (string)` A path to your twig file to render, this should be relative to your `BlueUtilsSettings::PROJECT_ROOT_DIR` path
@@ -55,9 +55,6 @@ This sets the body of the email to a rendered twig template and an option plainT
 #### replyTo - Not implemented
 * `replytoemail` = `string` A reply to E-Mail address - will be validated
 
-#### delaySend - Not implemented
-Delay the sending of the E-Mail, upto 72 hours in advance
-* `time` = `int` When the E-Mail should be sent by SendGrid - Number of seconds since the Unix Epoch (January 1 1970 00:00:00 GMT) - Upto 72 hours in advance maximum (due to SendGrid Constraints)
 
 #### send
 Send the E-Mail - returns the response object
