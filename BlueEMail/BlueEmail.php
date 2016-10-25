@@ -104,8 +104,8 @@
 				} else if (is_string($email)) {
 					$email = new Person(filter_var($email, FILTER_SANITIZE_EMAIL), filter_var($email, FILTER_SANITIZE_EMAIL));
 				}
-				$this->basicdetails['bcc'][] = $email->asArray();
-				$this->mainPersonalization->addTo($email->asSGEmail());
+				$this->basicdetails['cc'][] = $email->asArray();
+				$this->mainPersonalization->addCc($email->asSGEmail());
 			}
 
 			//Setup BCC Messages
@@ -120,7 +120,7 @@
 					$email = new Person(filter_var($email, FILTER_SANITIZE_EMAIL), filter_var($email, FILTER_SANITIZE_EMAIL));
 				}
 				$this->basicdetails['bcc'][] = $email->asArray();
-				$this->mainPersonalization->addTo($email->asSGEmail());
+				$this->mainPersonalization->addBcc($email->asSGEmail());
 			}
 
 			$this->sendgridemail->addPersonalization($this->mainPersonalization);
