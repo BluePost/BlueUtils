@@ -12,7 +12,6 @@ require_once (__DIR__ . "/BlueUtilsFunctions.php");
 $BluePost_Modules = ["all"];
 require_once(__DIR__ . "/BlueUtils.php");
 
-//require_once(__DIR__ . "/api_config.php"); //File nolonger used
 require_once(__DIR__ . "/../vendor/autoload.php");
 
 //Establish connection to the DB
@@ -29,6 +28,8 @@ $CONN = new mysqli (
 //Create the instance of the db library
 $db = new MysqliDb ($CONN);
 $DBLIB = $db;
+
+$CONFIG = Array();
 
 //Get the user's IP
 $CONFIG["USER"]["IP"] = (isset($_SERVER["HTTP_CF_CONNECTING_IP"]) ? $_SERVER["HTTP_CF_CONNECTING_IP"] : $_SERVER['REMOTE_ADDR']);
