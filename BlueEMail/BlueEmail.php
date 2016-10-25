@@ -41,7 +41,7 @@
 		private $sendgridemail;
 		private $twig;
 
-		public function __construct ( $FROM, $TO, $CC = [], $BCC = [], $SUBJECT = '') {
+		public function __construct ( $FROM, $TO, $CC = [], $BCC = [], $SUBJECT = '', $TIMESTAMP = 0) {
 
 			//IMPORT BLUE UTILS SETTINGS
 			global $BLUEUTILS_SETTINGS;
@@ -123,6 +123,11 @@
 				$this->mainPersonalization->addBcc($email->asSGEmail());
 			}
 
+			if (($TIMESTAMP != 0) && ($TIMESTAMP <= PHP_INT_MAX) && ($TIMESTAMP >= ~PHP_INT_MAX) && ($TIMESTAMP > time()) && (time()+259200) > $TIMESTAMP) { //Check valid timestamp
+				$this->mainPersonalization->setSendAt($TIMESTAMP); //Delay sending
+			}
+			
+			
 			$this->sendgridemail->addPersonalization($this->mainPersonalization);
 
 			return true;
@@ -189,12 +194,8 @@
 			$this->sendgridemail->setReplyTo($reply_to);
 		}
 
-		function delaySend($time) {
-			if (((string) (int) $timestamp === $timestamp) && ($timestamp <= PHP_INT_MAX) && ($timestamp >= ~PHP_INT_MAX) && $time > time() && (time()+259200) > $time) { //Check valid timestamp
-				$personalization = new SendGrid\Personalization();
-				$personalization->setSendAt();
-				$this->sendgridemail->addPersonalization($personalization);
-			} else return false;
+		function delaySend($timestamp) {
+			return false; //DEPRICATED FUNCTION
 		}
 
 		function send() {
