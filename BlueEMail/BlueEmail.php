@@ -45,8 +45,9 @@
 
 			//IMPORT BLUE UTILS SETTINGS
 			global $BLUEUTILS_SETTINGS;
-
-			require($BLUEUTILS_SETTINGS->PATH_TO_VENDOR."/autoload.php"); //Include Composer
+			
+			//This assumes that twig has already been loaded (probably by BlueUtils.php)
+			//require($BLUEUTILS_SETTINGS->PATH_TO_VENDOR."/autoload.php"); //Include Composer
 
 			//Setup Twig
 			$loader = new \Twig_Loader_Filesystem($BLUEUTILS_SETTINGS->PROJECT_ROOT_DIR);
@@ -54,6 +55,7 @@
 				"debug" => true
 			]);
 
+			//Enable debug functions like dump()
 			$this->twig->addExtension(new \Twig_Extension_Debug());
 
 			//Setup Sendgrid
@@ -160,13 +162,13 @@
 				$this->body['plaintext'] = $plaincontent;
 			}
 
-  		$htmlcontent = new \SendGrid\Content("text/html", $html);
-  		$this->sendgridemail->addContent($htmlcontent);
+  			$htmlcontent = new \SendGrid\Content("text/html", $html);
+  			$this->sendgridemail->addContent($htmlcontent);
 			$this->body['html'] = $htmlcontent;
 		}
 
 
-		function addAttachment($filename, $type = 'text/plain', $content = '') {
+		function addAttachment($filename, $content = '', $type='text/plain') {
 			$attachment = new \SendGrid\Attachment();
 			$attachment->setContent(base64_encode($content));
 			$attachment->setType($type); //TODO Validate This
@@ -194,9 +196,6 @@
 			$this->sendgridemail->setReplyTo($reply_to);
 		}
 
-		function delaySend($timestamp) {
-			return false; //DEPRICATED FUNCTION
-		}
 
 		function send() {
 			if (!isset($this->body['html'])) throw new Exception("No Body Provided");

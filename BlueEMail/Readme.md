@@ -49,8 +49,8 @@ This sets the body of the email to a rendered twig template and an option plainT
 
 #### addAttachment - Not implemented
 * `filename` = `string` A filename - like "kitten.png"
-* `type` = `string` The MIME type - you can use `mime_content_type($filepath)` if you like
 * `content` = `string` The file's contents - use `file_get_contents($filepath)`
+* `type` = `string` The MIME type - you can use `mime_content_type($filepath)` if you like
 
 #### replyTo - Not implemented
 * `replytoemail` = `string` A reply to E-Mail address - will be validated

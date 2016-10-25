@@ -12,7 +12,7 @@ require_once (__DIR__ . "/BlueUtilsFunctions.php");
 $BluePost_Modules = ["all"];
 require_once(__DIR__ . "/BlueUtils.php");
 
-require_once(__DIR__ . "/../vendor/autoload.php");
+require_once($BLUEUTILS_SETTINGS->PATH_TO_VENDOR . "autoload.php");
 
 //Establish connection to the DB
 
@@ -22,8 +22,6 @@ $CONN = new mysqli (
   $BLUEUTILS_SETTINGS->DB_CONFIG["PASSWORD"],
   $BLUEUTILS_SETTINGS->DB_CONFIG["NAME"]
 );
-
-
 
 //Create the instance of the db library
 $db = new MysqliDb ($CONN);
@@ -35,7 +33,6 @@ $CONFIG = Array();
 $CONFIG["USER"]["IP"] = (isset($_SERVER["HTTP_CF_CONNECTING_IP"]) ? $_SERVER["HTTP_CF_CONNECTING_IP"] : $_SERVER['REMOTE_ADDR']);
 
 //Get the auth credentials from either GET or POST
-//TODO: Use ternary operator?
 if ($POST) {
     if (isset($_POST["TOKEN_STRING"])) $TS = $_POST["TOKEN_STRING"]; else $TS = null;
     if (isset($_POST["TOKEN_USERID"])) $TU = $_POST["TOKEN_USERID"]; else $TU = null;
