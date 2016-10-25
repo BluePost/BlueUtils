@@ -5,7 +5,6 @@
 				"sendgrid/sendgrid": "~5.1"
 				"twig/twig" : "~1.26"
 	*/
-	//TODO Require twig and "sendgrid/sendgrid": "~5.1"
 	namespace BluePost;
 
 	date_default_timezone_set('UTC');
@@ -40,14 +39,16 @@
 
 		private $sendgrid;
 		private $sendgridemail;
-		private $twig; //TODO Set this up - it's currently not initalized!
-
+		private $twig; 
 
 		public function __construct ( $FROM, $TO, $CC = [], $BCC = [], $SUBJECT = '') {
 
+			//IMPORT BLUE UTILS SETTINGS
 			global $BLUEUTILS_SETTINGS;
 
-			require($BLUEUTILS_SETTINGS->PATH_TO_VENDOR."/autoload.php");
+			require($BLUEUTILS_SETTINGS->PATH_TO_VENDOR."/autoload.php"); //Include Composer
+			
+			//Setup Twig
 			$loader = new \Twig_Loader_Filesystem($BLUEUTILS_SETTINGS->PROJECT_ROOT_DIR);
 			$this->twig = new \Twig_Environment($loader, [
 				"debug" => true
@@ -55,7 +56,7 @@
 
 			$this->twig->addExtension(new \Twig_Extension_Debug());
 
-
+			//Setup Sendgrid
 			$this->sendgrid = new \SendGrid($BLUEUTILS_SETTINGS->SENDGRID_API_KEY); //Set APIKEY
 			$this->sendgridemail = new \SendGrid\Mail(); //Initialize email
 
@@ -72,6 +73,8 @@
 			$this->basicdetails['subject'] = $SUBJECT;
 			$this->sendgridemail->setSubject($this->basicdetails['subject']);
 
+			
+			//Start setting up email addresses
 			$this->mainPersonalization = new \SendGrid\Personalization();
 
 			//Setup TO Messages
@@ -159,7 +162,6 @@
 
 
 		function addAttachment($filename, $type = 'text/plain', $content = '') {
-			return false; //Not implemented
 			$attachment = new SendGrid\Attachment();
 			$attachment->setContent($content);
 			$attachment->setType($type); //TODO Validate This
