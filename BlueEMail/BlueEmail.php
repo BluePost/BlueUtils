@@ -185,7 +185,7 @@
 		}
 
 		function replyto($replytoemail) {
-			$reply_to = new SendGrid\ReplyTo(filter_var($replytoemail, FILTER_SANITIZE_EMAIL));
+			$reply_to = new \SendGrid\ReplyTo(filter_var($replytoemail, FILTER_SANITIZE_EMAIL));
 			$this->sendgridemail->setReplyTo($reply_to);
 		}
 
