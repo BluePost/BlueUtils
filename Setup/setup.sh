@@ -27,17 +27,23 @@ mkdir ../../helpers ../../display ../../api ../../static ../../static/scripts ..
 \cp ../BlueAuth/ ../../helpers/ -fr
 \cp ../BlueFiller/src/lib.js ./../../static/scripts/BlueFiller.js -fr
 \cp ../BlueEMail ../../helpers/ -fr
-\cp ../BlueUtils.php ../../helpers/
 \cp ../BlueUtilsFunctions.php ../../helpers/
 
+# If we are building a new project add settings etc
 if [ "$new" = true ] ; then
+	# Settings class
 	\cp ../BlueUtilsSettings ../../helpers/ -rf
 
+	# Live serve
 	\cp ../Bundler/src/live-serve/.htaccess ../../ -f
 
+	# Bundler Config
 	\cp basic/config.php ../.. -f
+
+	# API Header file
 	\cp basic/header.php ../../helpers/ -f
 
+	# Auth API endpoints
 	\cp basic/auth_api/* ../../api -f
 
 	cd ../..

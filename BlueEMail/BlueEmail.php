@@ -39,7 +39,7 @@
 
 		private $sendgrid;
 		private $sendgridemail;
-		private $twig; 
+		private $twig;
 
 		public function __construct ( $FROM, $TO, $CC = [], $BCC = [], $SUBJECT = '') {
 
@@ -47,7 +47,7 @@
 			global $BLUEUTILS_SETTINGS;
 
 			require($BLUEUTILS_SETTINGS->PATH_TO_VENDOR."/autoload.php"); //Include Composer
-			
+
 			//Setup Twig
 			$loader = new \Twig_Loader_Filesystem($BLUEUTILS_SETTINGS->PROJECT_ROOT_DIR);
 			$this->twig = new \Twig_Environment($loader, [
@@ -73,7 +73,7 @@
 			$this->basicdetails['subject'] = $SUBJECT;
 			$this->sendgridemail->setSubject($this->basicdetails['subject']);
 
-			
+
 			//Start setting up email addresses
 			$this->mainPersonalization = new \SendGrid\Personalization();
 
@@ -162,8 +162,8 @@
 
 
 		function addAttachment($filename, $type = 'text/plain', $content = '') {
-			$attachment = new SendGrid\Attachment();
-			$attachment->setContent($content);
+			$attachment = new \SendGrid\Attachment();
+			$attachment->setContent(base64_encode($content));
 			$attachment->setType($type); //TODO Validate This
 			$attachment->setFilename($filename);
 			$attachment->setDisposition("attachment"); //Alternative is inline for a picture - but we'll ignore this for now
