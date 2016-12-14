@@ -202,8 +202,11 @@
 			$this->sendgridemail->addHeader("X-BlueEMail", "1");
 
 			//var_dump($this->sendgridemail->jsonSerialize());
-			//Send the damn thing
-			return $this->sendgrid->client->mail()->send()->post($this->sendgridemail);
+			//Send the damn thing			
+			$send = $this->sendgrid->client->mail()->send()->post($this->sendgridemail);
+			$response = \json_decode($send->body(), true);
+			if (isset($response["errors"])) return false;
+			else return true; 
 		}
 
 	}
