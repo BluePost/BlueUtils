@@ -14,6 +14,7 @@ Simple utils for PHP and JavaScript
 
 ## Getting started
 To start a new project do the following:
+* Install and globally alias Composer (install and `run mv composer.phar /usr/local/bin/composer`)
 * Clone the repo into an empty project folder
 * `cd` into `BlueUtils/Setup`
 * Execute `./setup.sh -n`
