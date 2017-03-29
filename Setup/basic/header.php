@@ -1,9 +1,4 @@
 <?php
-
-//DEV ONLY - Remeber to turn off
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
 if (!isset($SECURE)) $SECURE = false;
 if (!isset($POST)) $POST = true;
 
