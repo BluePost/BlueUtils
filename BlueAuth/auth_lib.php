@@ -53,7 +53,9 @@
             if ($this->TOKEN_INSTALLHASH != null) {
                 if($this->TOKEN_INSTALLHASH_NONCE == null) return authError()->TOKEN_NOTSET->custom("NON", "The install token nonce was not set");
             }
-            return $this->currentTokenValid();
+            $result = $this->currentTokenValid();
+            if (!isset($result["valid"])) $result["valid"] = false;
+            return $result;
 
 
         }
@@ -345,5 +347,17 @@
             ];
         }
 
+<<<<<<< HEAD
+=======
+        function sanitizeUserData($USER) {
+            $new_arr = $USER;
+            unset($new_arr["auth_password_hash"]);
+            unset($new_arr["auth_password_salt_1"]);
+            unset($new_arr["auth_password_salt_2"]);
+            unset($new_arr["auth_signup_token"]);
+            return $new_arr;
+        }
+
+>>>>>>> 1f7428b7bd29bff8e54b4814b47dba85afb283e1
     }
 ?>
