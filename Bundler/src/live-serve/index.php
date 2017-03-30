@@ -60,8 +60,10 @@ if (isset($BUNDLER_CONFIG_ARRAY["base_url"]))
 
 if ($pathFinderResult == "")
     $PAGE = array_values($FILES)[0];
-elseif (!isset($FILES[$pathFinderResult]))
+elseif (!isset($FILES[$pathFinderResult])) {
+    http_response_code(404);
     $PAGE = $FILES['404'];
+}
 else
     $PAGE = $FILES[$pathFinderResult];
 

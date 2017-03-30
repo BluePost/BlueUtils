@@ -317,5 +317,33 @@
 
         }
 
+        /**
+        * This function does not actually signup the user, instead it checks that the username and email are not already taken and creates a hash
+        */
+        function signup_user_checks($username, $password, $email) {
+            $username = sanitizestring($username);
+            $email = sanitizestring($email);
+
+            if (strlen($password) < 10)
+                return authError()->SIGNUP_PASSWORD_TOOSHORT->custom("10", "Password needs to be atleast 10 characters");
+
+            $this->db->where("auth_username", $username);
+            $this->db->orWhere("auth_email", $email);
+            $user = $this->db->getOne("auth_users");
+
+            if ($this->db->count > 0)
+                return authError()->SIGNUP_ALREADY_TAKEN->build();
+
+            $salt1 = randomstring(10);
+            $salt2 = randomstring(10);
+            $hash = hash("sha512", $salt1 . $password . $salt2);
+            return [
+                "success" => true,
+                "salt1" => $salt1,
+                "salt2" => $salt2,
+                "hash" => $hash
+            ];
+        }
+
     }
 ?>

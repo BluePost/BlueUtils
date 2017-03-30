@@ -16,7 +16,6 @@ Loadr.load = function (onComplete, force, clearCache) {
 
     //Select all of the includes with a source attribute
     var includes = $("include[source]");
-    console.log(includes);
 
     if (includes.length == 0) onComplete()
 
@@ -38,9 +37,9 @@ Loadr.load = function (onComplete, force, clearCache) {
 
         var elem = this;
         //Now ajax load the source
-        $.get(
-            $(this).attr("source"),
-            function (data) {
+        $.ajax({
+            "url" :$(this).attr("source"),
+            success: function (data) {
                 //Set the element's html to the downloded source
                 $(elem).html(data);
                 //Evaluate the onDownload element of the include
@@ -51,8 +50,11 @@ Loadr.load = function (onComplete, force, clearCache) {
                     onComplete()
                 }
 
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                eval($(elem).attr("onerror"))
             }
-        ).fail(function () {eval($(elem).attr("onerror"))})
+        }).fail(function () {eval($(elem).attr("onerror"))})
     })
 };
 
