@@ -2,9 +2,9 @@
 namespace BluePost;
 //TODO: Work with BlueError to stop requiring useless builds
 class AjaxResponse {
-    
+
     private $response = Array();
-    
+
     /**
      * Builds an AjaxResponse
      * @param array $baseArray An array to start from as the response, will be JSON encoded
@@ -12,7 +12,7 @@ class AjaxResponse {
     public function __construct($baseArray = Array()) {
         $this->response = $baseArray;
     }
-    
+
     /**
     * Assert that a test is true, if not, die with an error message
     * @param bool $test - The thing to test if TRUE
@@ -50,7 +50,7 @@ class AjaxResponse {
    function condAssert ($cond, $test, $error, $json = TRUE) {
        if ($cond) $this->assert ($test, $error, $json);
    }
-   
+
    /**
     * Add a value to the response array
     * @param string $key
@@ -59,7 +59,7 @@ class AjaxResponse {
    function addResponse($key, $value) {
        $this->response[$key] = $value;
    }
-   
+
    /**
     * Send the response
     * @param array $response - Default Array() The response to send as an array to be json_encoded
@@ -67,9 +67,7 @@ class AjaxResponse {
     */
    function respond($response=Array(), $add=TRUE) {
        if ($add) die(json_encode (array_merge ($this->response, $response)));
-       json_encode($response);
+       die(json_encode($response));
    }
-    
+
 }
-
-
