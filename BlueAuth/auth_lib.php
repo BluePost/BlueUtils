@@ -347,8 +347,6 @@
             ];
         }
 
-<<<<<<< HEAD
-=======
         function sanitizeUserData($USER) {
             $new_arr = $USER;
             unset($new_arr["auth_password_hash"]);
@@ -358,6 +356,5 @@
             return $new_arr;
         }
 
->>>>>>> 1f7428b7bd29bff8e54b4814b47dba85afb283e1
     }
 ?>
