@@ -35,7 +35,7 @@ $TWIG = new Twig_Environment($TWIG_LOADER, Array());
 $pathFinderRequest = parse_url($_SERVER['REQUEST_URI']);
 $pathFinderPath = $pathFinderRequest["path"];
 
-$pathFinderResult = trim(str_replace(basename($_SERVER['SCRIPT_NAME']), '', $pathFinderPath), '/');
+$pathFinderResult = strtolower(trim(str_replace(basename($_SERVER['SCRIPT_NAME']), '', $pathFinderPath), '/'));
 $pathFinderResult = explode('/', $pathFinderResult);
 
 $pathFinderMax_level = 100;
