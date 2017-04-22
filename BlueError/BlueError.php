@@ -24,6 +24,7 @@ function blueErrorArray($codes = array("GE"), $message = "An error occurred") {
 
     return Array (
         "error" => true,
+        "success" => false,
         "code" => array (
             "string" => $errorCode,
             "sections" => $codes
@@ -45,6 +46,7 @@ function customError($type = "SE", $subType = "GE", $section = null, $message = 
     $errorCode = $type . "/" . $subType . ($section != null ? "/" . $section : "");
     return array (
         "error" => true,
+        "success" => false,
         "code"  => array (
             "type" => $type,
             "subtype" => $subType,
@@ -66,4 +68,3 @@ function customSuccess($message = "The operation completed successfully", $paylo
     $payload["success"] =  TRUE;
     return $payload;
 }
-
