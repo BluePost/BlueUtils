@@ -91,9 +91,11 @@ function AjaxRequest(method, resource, data, successKey, errorKey) {
         })
         .done (function (data) {
             try{
-                data = JSON.parse(data);
+                if (typeof data === 'string')
+                    data = JSON.parse(data);
             }
             catch (e) {
+                console.log(e)
                 me.onBadJSONFunction(data);
             }
             if (data[me.errorKey] || !data[me.successKey]) {
@@ -127,30 +129,30 @@ function AjaxRequestFactoryFactory (base, defaultData, type, onError, onSuccess,
 
     var me = {};
 
-    me.type = (typeof type !== 'undefined' && type != null)
+    me.type = (type != undefined && type != null)
         ?  type : "GET";
-    me.defaultData = (typeof defaultData !== 'undefined' && defaultData != null)
+    me.defaultData = (defaultData != undefined && defaultData != null)
         ?  defaultData : {};
 
-    me.onError = (typeof onError !== 'undefined' && onError != null)
+    me.onError = (onError != undefined && onError != null)
         ?  onError : function (data){console.log("ERROR");};
-    me.onSuccess = (typeof onSuccess !== 'undefined' && onError != null)
+    me.onSuccess = (onSuccess != undefined && onError != null)
         ?  onSuccess : function (data){console.log("SUCCESS");};
-    me.onBadJSON = (typeof onBadJson !== 'undefined' && onBadJson != null)
+    me.onBadJSON = (onBadJson != undefined && onBadJson != null)
         ? onBadJson : function (data) {
-                console.log("Bad JSON returned from the API");
+                console.log("Bad JSON returned from the API"); console.log(data);
             };
-    me.onFail = (typeof onFail !== 'undefined' && onFail != null)
+    me.onFail = (onFail != undefined && onFail != null)
         ? onFail : function (data) {
                 console.log("The connection to the API failed")
             };
 
 
-    me.log = (typeof log !== 'undefined' && log != null)
+    me.log = (log != undefined && log != null)
         ?  log : false;
-    me.successKey = (typeof successKey !== 'undefined' && successKey != null)
+    me.successKey = (successKey != undefined && successKey != null)
         ? successKey : "success";
-    me.errorKey = (typeof errorKey !== 'undefined' && errorKey != null)
+    me.errorKey = (errorKey != undefined && errorKey != null)
         ? errorKey : "error";
     me.base = base;
 
